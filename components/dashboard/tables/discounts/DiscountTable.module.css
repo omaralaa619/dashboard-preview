@@ -1,0 +1,60 @@
+.main {
+  margin-top: 24px;
+  background: var(--background);
+}
+.top {
+  display: flex;
+  justify-content: space-between;
+
+  border-bottom: 1px solid var(--borders);
+  padding: 8px 16px;
+}
+.top button {
+  cursor: pointer;
+}
+.buttonsLeft {
+  display: flex;
+  gap: 16px;
+}
+.filterButton {
+  padding: 4px 8px;
+  border: 2px solid var(--borders);
+
+  border-radius: 6px;
+  color: var(--black);
+  background: var(--background);
+}
+.filterButton:hover {
+  background: var(--muted);
+}
+.buttonSelected {
+  background: var(--black);
+
+  color: var(--background);
+  border: var(--black);
+  transition: background 0.2s ease;
+}
+.buttonSelected:hover {
+  background: var(--black);
+}
+.notFound {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 116px 0;
+}
+
+@media (max-width: 990px) {
+  .top {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .buttonsLeft {
+    gap: 8px;
+  }
+
+  .buttonsLeft button {
+    width: 100%;
+    flex: 1;
+  }
+}

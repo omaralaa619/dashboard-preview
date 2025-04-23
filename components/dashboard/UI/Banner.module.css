@@ -1,0 +1,40 @@
+.container {
+  position: relative;
+
+  color: var(--black);
+  background: var(--background);
+  border: 1px solid var(--borders);
+
+  border-radius: 4px;
+  width: 50%;
+
+  margin: auto;
+  margin-top: 8px;
+  padding: 12px 16px;
+
+  display: flex;
+  justify-content: center;
+}
+.content {
+  position: absolute;
+  background: red;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+}
+.close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  fill: white;
+  cursor: pointer;
+  z-index: 2;
+}
+
+@media (max-width: 990px) {
+  .container {
+    width: 90%;
+  }
+}

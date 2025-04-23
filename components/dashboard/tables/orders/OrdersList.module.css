@@ -1,0 +1,122 @@
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+
+  border-radius: var(--radius);
+  border-bottom: 1px solid var(--borders);
+  gap: 4px;
+  transition: background 0.2s ease;
+}
+
+.row:hover {
+  background: var(--tableMuted);
+}
+.row a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 3;
+  color: var(--black);
+  display: flex;
+
+  padding: 16px 0 16px 0;
+}
+
+.checkable {
+  flex: 1.2;
+}
+
+.row a p,
+.status {
+  flex: 1;
+}
+
+.statusText {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--borders);
+  width: fit-content;
+  padding: 4px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.statusDot {
+  height: 8px;
+  width: 8px;
+  background: #50af3b;
+  border-radius: 100%;
+}
+.unfulfilled {
+  background: #898989;
+}
+
+.header {
+  background: var(--tableMuted);
+  font-size: 14px;
+  font-weight: bold;
+}
+.header:hover {
+  background: var(--tableMuted);
+}
+
+.statusAmount {
+  display: flex;
+  flex: 2;
+}
+
+.container {
+  display: flex;
+
+  position: relative;
+
+  padding: 16px 0 16px 48px;
+
+  cursor: pointer;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.mobDate {
+  display: none;
+}
+
+/* Create a custom checkbox */
+
+@media (max-width: 990px) {
+  .header p {
+    display: none;
+  }
+
+  .date {
+    display: none;
+    flex: 0;
+  }
+  .mobDate {
+    display: block;
+    margin-left: 16px;
+    color: var(--secondaryText);
+  }
+
+  .row a {
+    flex: 1;
+    height: 100%;
+    text-align: right;
+  }
+
+  .statusAmount {
+    text-align: right;
+
+    flex-direction: column;
+    gap: 8px;
+    margin-right: 16px;
+  }
+
+  .statusText {
+    margin-left: auto;
+  }
+}

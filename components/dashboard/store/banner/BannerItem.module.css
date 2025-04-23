@@ -1,0 +1,25 @@
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid var(--borders);
+}
+.input {
+  background: var(--background);
+  border: 1px solid var(--borders);
+  padding: 8px;
+  color: var(--black);
+}
+.button {
+  background: var(--black);
+  border: none;
+  color: var(--background);
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-top: 16px;
+}
+.cancel {
+  background: none;
+  color: var(--black);
+  border: 1.5px solid var(--borders);
+}

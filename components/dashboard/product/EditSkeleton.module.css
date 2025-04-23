@@ -1,0 +1,31 @@
+.main {
+  margin-top: 36px;
+  display: flex;
+  gap: 16px;
+}
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.left {
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+  flex: 4;
+}
+.right {
+  flex: 1;
+  padding: 16px;
+  height: fit-content;
+}
+.sk {
+  width: auto;
+}
+
+@media (max-width: 990px) {
+  .main {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,16 @@
+.pointerEvents {
+  pointer-events: none;
+}
+.deleteButton {
+  background: #d92d20;
+  color: white;
+  border: none;
+}
+.deliverButton {
+  background: var(--black);
+  color: var(--background);
+  border: none;
+}
+.deliverButton p {
+  color: var(--background);
+}

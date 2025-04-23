@@ -1,0 +1,177 @@
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+
+  border-radius: var(--radius);
+  border-bottom: 1px solid var(--borders);
+  gap: 4px;
+  transition: background 0.2s ease;
+  overflow: hidden;
+}
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+  width: 100%;
+}
+
+.row:hover {
+  background: var(--tableMuted);
+}
+.desktopRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 3;
+  color: var(--black);
+  display: flex;
+
+  padding: 16px 0 16px 0;
+}
+
+.checkable {
+  flex: 2;
+  align-items: center;
+  min-width: 150px;
+  gap: 8px;
+}
+
+.row a p,
+.status {
+  flex: 1;
+}
+
+.statusText {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--borders);
+  width: fit-content;
+  padding: 4px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.statusDot {
+  height: 8px;
+  width: 8px;
+  background: #50af3b;
+  border-radius: 100%;
+}
+.unfulfilled {
+  background: #898989;
+}
+
+.header {
+  background: var(--tableMuted);
+  font-size: 14px;
+  font-weight: bold;
+}
+.header:hover {
+  background: var(--tableMuted);
+}
+
+.statusAmount {
+  display: flex;
+  flex: 2;
+}
+
+.container {
+  display: flex;
+
+  position: relative;
+
+  padding: 16px 0 16px 48px;
+
+  cursor: pointer;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.mobDate {
+  display: none;
+}
+
+.rightMob {
+  display: none;
+}
+.rightMobContainer {
+  display: none;
+}
+
+.imageCont {
+  /* position: relative;
+
+  width: 100%; */
+  height: 100%;
+  /* background: red; */
+}
+.image {
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+@media (max-width: 990px) {
+  .rightMobContainer {
+    display: block;
+    width: 100%;
+  }
+  .row {
+    padding: 0;
+    justify-content: flex-start;
+  }
+  .checkable {
+    flex: 0;
+  }
+  .mobNone {
+    display: none;
+  }
+  .desktopRow {
+    display: none;
+  }
+  .header p {
+    display: none;
+  }
+
+  .date {
+    display: none;
+    flex: 0;
+  }
+  .mobDate {
+    display: block;
+    margin-left: 16px;
+    color: var(--secondaryText);
+  }
+
+  .row a {
+    flex: 1;
+    height: 100%;
+    text-align: right;
+  }
+
+  .statusAmount {
+    text-align: right;
+
+    flex-direction: column;
+    gap: 8px;
+    margin-right: 16px;
+  }
+
+  .rightMob {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: left;
+  }
+  .rightMob p {
+    text-align: left;
+  }
+  .status {
+    flex: 0;
+  }
+}

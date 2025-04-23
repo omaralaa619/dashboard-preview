@@ -1,0 +1,63 @@
+.main {
+  margin-top: 36px;
+  margin-bottom: 36px;
+  width: 100%;
+}
+.title {
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 700;
+}
+.titleContainer {
+  padding: 16px;
+  border-bottom: 1px solid var(--borders);
+}
+.card {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+}
+
+.add {
+  color: var(--primary);
+  text-align: right;
+  padding: 16px;
+  cursor: pointer;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 4px;
+}
+.form input {
+  background: var(--background);
+  border: 1px solid var(--borders);
+  padding: 8px;
+  color: var(--black);
+}
+.button {
+  background: var(--black);
+  border: none;
+  color: var(--background);
+  padding: 8px 0;
+  border-radius: 4px;
+  margin-top: 16px;
+}
+.cancel {
+  background: none;
+  color: var(--black);
+  border: 1.5px solid var(--borders);
+  margin-top: 4px;
+}
+@media (max-width: 990px) {
+  .main {
+    width: 100%;
+    margin: auto;
+    margin-top: 36px;
+  }
+  .card {
+    width: 100%;
+  }
+}

@@ -1,0 +1,9 @@
+.pageContainer {
+  display: flex;
+}
+
+@media (max-width: 990px) {
+  .pageContainer {
+    flex-direction: column-reverse;
+  }
+}

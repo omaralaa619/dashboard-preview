@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  fill: var(--black);
+}
+.container svg {
+  width: 36px;
+  height: 36px;
+}
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+}
+.label {
+  color: var(--secondaryText);
+  margin-bottom: 4px;
+}
+
+.delete {
+  background: none;
+  border: none;
+  align-self: end;
+  cursor: pointer;
+}
+.delete svg {
+  width: 20px;
+  height: 20px;
+}
+@media (max-width: 990px) {
+  .container {
+    flex-direction: column;
+  }
+}

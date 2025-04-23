@@ -1,0 +1,39 @@
+.root {
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1300px;
+  margin: auto;
+  padding: 8em 2em 2em 2em;
+}
+
+.container {
+  text-align: center;
+}
+
+.title {
+  font-size: 28px;
+  margin-bottom: 1em;
+}
+
+.container a {
+  display: block;
+  width: 200px;
+
+  font-size: 13px;
+  letter-spacing: 1px;
+  padding: 1em 2em;
+
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--black);
+  background: var(--black);
+  color: white;
+}
+
+.bContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 2em;
+}

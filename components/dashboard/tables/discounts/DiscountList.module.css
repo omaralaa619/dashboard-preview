@@ -1,0 +1,165 @@
+.row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--borders);
+  gap: 4px;
+}
+
+.row:hover {
+  background: var(--muted);
+}
+.row a {
+  display: flex;
+  justify-content: space-between;
+  flex: 5;
+  color: var(--black);
+}
+
+.checkable {
+  flex: 1.2;
+}
+.rest {
+  display: flex;
+  justify-content: space-between;
+  flex: 5;
+  padding: 16px 0 16px 0;
+}
+
+.rest p {
+  flex: 1;
+}
+
+.header {
+  background: var(--muted);
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.checkable:hover ~ .row {
+  background: red;
+}
+
+/*///////////////////  checkbox styles     /////////////////////////*/
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #005eff14;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: var(--black);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkmark:after {
+  left: 6px;
+  top: 4px;
+  width: 3px;
+  height: 7px;
+  border: solid var(--background);
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.container {
+  display: flex;
+
+  position: relative;
+
+  padding: 16px 0 16px 48px;
+
+  cursor: pointer;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+
+  top: 50%;
+  left: 16px;
+
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
+  background-color: var(--background);
+  border: 1.5px solid var(--borders);
+  border-radius: 6px;
+}
+
+@media (max-width: 990px) {
+  .header p {
+    display: none;
+  }
+  .orderItem {
+    font-size: 18px;
+  }
+  .idDate {
+    flex-direction: column;
+    flex: 1;
+    gap: 16px;
+    width: auto;
+  }
+  .customerStatusPrice {
+    flex-direction: column;
+
+    flex: 1;
+    gap: 16px;
+    margin-right: 40px;
+    width: auto;
+  }
+  .statusPrice {
+    justify-content: flex-end;
+    gap: 8px;
+    width: auto;
+  }
+  .statusCont {
+    gap: 0;
+    width: auto;
+  }
+  .status {
+    height: 15px;
+    width: 15px;
+    border-radius: 100%;
+    background: var(--green500);
+  }
+
+  .statusText {
+    display: none;
+  }
+  .orderItem p {
+    width: auto;
+  }
+  .customer {
+    text-align: right;
+  }
+  .container {
+    padding-left: 28px;
+  }
+}

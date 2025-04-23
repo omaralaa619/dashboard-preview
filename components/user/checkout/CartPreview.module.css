@@ -1,0 +1,138 @@
+.root {
+  background: #f5f5f5;
+  border-left: 1.5px solid #d5d5d5;
+  padding: 67px 67px 21px 44px;
+  flex: 1;
+}
+.container {
+  max-width: 500px;
+  width: 100%;
+  height: 100%;
+  padding: 0 24px 24px 24px;
+}
+.cartPreviewContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.subtotal,
+.total,
+.shipping {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container hr {
+  margin: 2rem 0;
+
+  border: 1px solid #d5d5d5;
+  background-color: #d5d5d5;
+
+  border-radius: 10px;
+}
+
+.totals {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+  padding-top: 16px;
+  gap: 8px;
+  border-top: 1px solid var(--borders);
+}
+
+.subtotal p,
+.shipping p {
+  color: #4a4a4a;
+  font-size: 14px;
+}
+
+.subtotal span {
+  color: #2b2b2b;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.shipping span {
+  color: #6b6b6b;
+  font-size: 14px;
+}
+
+.total p {
+  color: #2b2b2b;
+  font-weight: 600;
+  font-size: 16px;
+}
+.total span {
+  font-size: 24px;
+}
+
+.summary {
+  display: none;
+  font-size: 14px;
+  font-weight: 500;
+  user-select: none;
+}
+.summary span {
+  font-weight: 500;
+}
+.showSummary {
+  display: flex;
+  align-items: center;
+
+  color: #a56600;
+
+  font-size: 14px;
+}
+
+.arrow svg {
+  width: 10px;
+  margin-left: 0.5rem;
+  transform: rotate(-90deg);
+  fill: #a56600;
+}
+
+.cart svg {
+  fill: #a56600;
+  width: 13px;
+  margin-right: 0.7rem;
+  margin-top: -2px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 12px;
+  font-size: 14px;
+
+  border: 1.2px solid #d9d9d9;
+
+  border-radius: 4px;
+
+  transition: 0.2s ease;
+}
+
+@media (max-width: 990px) {
+  .root {
+    padding: 0;
+    width: 100%;
+    padding: 0 1rem;
+    overflow: hidden;
+    border: none;
+  }
+  .container {
+    max-width: 1000000px;
+  }
+  .skeletonContainer {
+    margin: 16px;
+  }
+  .summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+    cursor: pointer;
+    padding: 17px 0;
+    border-top: 1px solid #d5d5d5;
+    border-bottom: 1px solid #d5d5d5;
+  }
+}

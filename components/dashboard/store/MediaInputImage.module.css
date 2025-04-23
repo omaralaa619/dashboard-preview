@@ -1,0 +1,21 @@
+.imageContainer {
+  position: relative;
+}
+.image {
+  width: 100px;
+}
+.x {
+  width: 16px;
+  height: 16px;
+  fill: black;
+  background: rgb(246, 246, 246);
+  border-radius: 100%;
+  border: none;
+  position: absolute;
+  left: -8px;
+  top: -8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,18 @@
+.sMain {
+  display: flex;
+  align-items: center;
+
+  gap: 0;
+  width: 100%;
+}
+
+.imgSkeleton {
+  width: 100%;
+  margin: 0;
+  flex: 1;
+}
+.textSkeleton {
+  margin: 0;
+  width: 100%;
+  flex: 8;
+}

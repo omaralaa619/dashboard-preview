@@ -1,0 +1,19 @@
+.container,
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--secondaryText);
+  fill: var(--secondaryText);
+}
+.container {
+  margin-bottom: 8px;
+}
+.link {
+  color: var(--secondaryText);
+}
+.last {
+  fill: none;
+  color: var(--black);
+}

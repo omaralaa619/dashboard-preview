@@ -1,0 +1,28 @@
+.main {
+  margin-top: 36px;
+  width: 100%;
+  height: fit-content;
+}
+.title {
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 700;
+}
+.titleContainer {
+  padding: 16px;
+  border-bottom: 1px solid var(--borders);
+}
+.card {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+}
+.button {
+  background: var(--black);
+  border: none;
+  color: var(--background);
+  padding: 8px 0;
+  border-radius: 4px;
+  margin: 0 16px 16px 16px;
+}

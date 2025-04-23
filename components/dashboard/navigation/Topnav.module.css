@@ -1,0 +1,88 @@
+.root {
+  position: fixed;
+  width: calc(100% - 240px);
+  top: 0;
+  margin-left: 240px;
+  border-bottom: 1px solid var(--borders);
+  height: 71.67px;
+  background: var(--background);
+  z-index: 1;
+}
+
+.main {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 16px 32px;
+}
+.date {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  font-size: 14px;
+  color: var(--secondaryText);
+}
+
+.circle {
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(
+    146deg,
+    #d12e06 14.04%,
+    #7f8006 48.35%,
+    #2dd206 87.94%
+  );
+}
+
+.burger {
+  cursor: pointer;
+  display: none;
+}
+
+.burger div {
+  width: 23px;
+  height: 1.5px;
+  background-color: var(--black);
+  margin: 5px;
+  border-radius: 50px;
+}
+
+.mobileLogo {
+  display: none;
+  fill: var(--black);
+}
+
+@media (max-width: 990px) {
+  .comboBox {
+    display: none;
+  }
+  .root {
+    width: 100%;
+    margin-left: 0;
+  }
+  .burger {
+    display: block;
+  }
+  .date {
+    display: none;
+  }
+  .mobileLogo {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+  }
+}
+@media (max-width: 990px) {
+  .main {
+    padding: 16px 16px;
+  }
+}

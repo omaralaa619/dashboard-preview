@@ -1,0 +1,73 @@
+.boxContainer {
+  position: relative;
+}
+.box {
+  fill: var(--black);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--borders);
+  background: rgba(255, 255, 255, 0);
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.box:hover {
+  background: var(--muted);
+}
+
+.boxLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--black);
+}
+
+.dropDown {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  /* gap: 8px; */
+  left: 0;
+  top: 42px;
+  width: 100%;
+  border: 1px solid var(--borders);
+  background: var(--background);
+
+  transition: all 0.1s ease-in;
+  z-index: 2;
+  border-radius: var(--radius);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin: 4px;
+  border-radius: 4px;
+  color: var(--secondaryText);
+  fill: var(--secondaryText);
+  font-size: 14px;
+
+  /* border-bottom: 1px solid var(--borders); */
+  cursor: pointer;
+}
+
+.item svg {
+  width: 14px;
+}
+.item:hover {
+  background: var(--muted);
+}
+.none {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}

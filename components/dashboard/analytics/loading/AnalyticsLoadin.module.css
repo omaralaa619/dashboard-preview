@@ -1,0 +1,15 @@
+.main {
+  display: grid;
+  grid-template-columns: 32.2% 32.2% 32.2%;
+
+  gap: 16px;
+}
+
+@media (max-width: 990px) {
+  .main {
+    grid-template-columns: 100%;
+  }
+  .noneMobile {
+    display: none;
+  }
+}

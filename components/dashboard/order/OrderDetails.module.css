@@ -1,0 +1,152 @@
+.main {
+  display: flex;
+  gap: 24px;
+}
+.titleContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--black);
+}
+
+.statusContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--borders);
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+.statusContainer p {
+  font-size: 14px;
+}
+.status {
+  width: 12px;
+  height: 12px;
+  background: #50af3b;
+  border-radius: 100%;
+}
+.unfulfilled {
+  background: #898989;
+}
+.date {
+  font-size: 14px;
+  color: var(--secondaryText);
+  margin: 8px 0 16px 0;
+}
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.buttons button {
+  padding: 8px 16px;
+  border: none;
+  font-weight: bold;
+  color: var(--background);
+  background: var(--black);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.left {
+  flex: 2;
+}
+.items {
+  padding: 32px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border-bottom: 1px solid var(--borders);
+}
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10%;
+}
+.nameSize {
+  display: flex;
+  justify-content: space-between;
+
+  flex: 2;
+}
+.image {
+  width: 50px;
+}
+.size {
+  font-weight: bold;
+}
+.totals {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  width: 50%;
+  margin-left: 50%;
+}
+
+.numbers {
+  display: flex;
+  justify-content: space-between;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.right {
+  flex: 1;
+}
+
+.container {
+  padding: 32px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  border-bottom: 1px solid var(--borders);
+}
+.labelContainer {
+  display: flex;
+  justify-content: space-between;
+}
+.link {
+  color: var(--primary);
+
+  font-size: 14px;
+  cursor: pointer;
+}
+.labelContainer {
+  color: var(--black);
+}
+.container {
+  color: var(--secondaryText);
+}
+.fulfillButton {
+  background: var(--black);
+  color: var(--background) !important;
+  border: none;
+}
+.deleteButton {
+  background: #d92d20;
+  color: white;
+  border: none;
+}
+
+@media (max-width: 990px) {
+  .main {
+    flex-direction: column;
+  }
+  .nameSize {
+    flex-direction: column;
+  }
+  .totals {
+    width: 100%;
+    margin-left: 0px;
+  }
+}

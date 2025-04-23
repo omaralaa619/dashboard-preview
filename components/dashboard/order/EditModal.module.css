@@ -1,0 +1,118 @@
+.main {
+  height: 90%;
+  width: 90%;
+  background: none;
+  border: none;
+}
+.container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 24px;
+  z-index: 1000;
+  width: fit-content;
+
+  gap: 18px;
+}
+.fallback {
+  top: -100%;
+  left: -100%;
+  width: 200vw;
+  height: 210vh;
+  background: #00000071;
+
+  position: fixed;
+  z-index: 100;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.top p {
+  font-size: 18px;
+}
+.edit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+
+  padding-bottom: 8px;
+}
+.section p {
+  font-weight: bold;
+  color: var(--secondaryText);
+  margin-bottom: 16px;
+}
+.contactInput {
+  display: flex;
+  gap: 8px;
+}
+.shippingCont {
+  display: flex;
+  gap: 8px;
+}
+.inputControl {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 4px;
+}
+.inputControl label {
+  color: var(--secondaryText);
+}
+.inputControl input {
+  border: 1px solid var(--borders);
+  height: 36px;
+  outline: none;
+  padding-left: 8px;
+  transition: all 1s ease;
+  background: var(--background);
+  color: var(--black);
+}
+
+.inputControl input:focus {
+  outline: 1.5px solid #b6bec8;
+}
+.formContainer button {
+  padding: 16px 8px;
+  border: 2px solid var(--borders);
+
+  border-radius: 6px;
+  color: var(--black);
+
+  background: var(--black);
+
+  color: var(--background);
+
+  transition: background 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+
+@media (max-width: 990px) {
+  .container {
+    width: 90%;
+    height: 90%;
+    overflow: scroll;
+  }
+  .shippingCont {
+    flex-direction: column;
+  }
+  .contactInput {
+    flex-direction: column;
+  }
+}
