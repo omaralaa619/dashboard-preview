@@ -98,7 +98,7 @@ const Topnav = () => {
         </motion.div>
 
         <ComboBox
-          title={"Lynne"}
+          title={"User"}
           titleSVG={<Circle />}
           dropdownItems={dropownItems}
           gap={"64px"}
@@ -108,7 +108,7 @@ const Topnav = () => {
         {/* <p className={classes.date}>4 January 2025</p> */}
 
         <div className={classes.mobileLogo}>
-          <p className="text-2xl">Lynne</p>
+          <p className="text-2xl">DASHBOARD</p>
         </div>
 
         <ThemeButton />

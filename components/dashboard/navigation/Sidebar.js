@@ -92,7 +92,7 @@ const Sidebar = ({ children }) => {
         className={classes.root}
       >
         <div className={classes.logo}>
-          <h1 className="text-4xl font-medium">Lynne</h1>
+          <h1 className="text-4xl font-medium">DASHBOARD</h1>
         </div>
 
         <nav className={classes.navigation}>
