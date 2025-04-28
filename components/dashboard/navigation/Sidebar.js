@@ -29,14 +29,6 @@ const Sidebar = ({ children }) => {
     dispatch(adminUiActions.closeNav());
   };
 
-  if (status == "authenticated") {
-    if (!session.user.admin) {
-      router.push("/");
-    }
-  }
-  if (status == "unauthenticated") {
-    router.push("/");
-  }
   useEffect(() => {
     if (navOpen) {
       document.body.style.overflow = "hidden";
@@ -92,7 +84,7 @@ const Sidebar = ({ children }) => {
         className={classes.root}
       >
         <div className={classes.logo}>
-          <h1 className="text-4xl font-medium">DASHBOARD</h1>
+          <h1 className="text-2xl font-medium">DASHBOARD</h1>
         </div>
 
         <nav className={classes.navigation}>

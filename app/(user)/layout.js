@@ -21,14 +21,7 @@ export default function RootLayout({ children }) {
     <AuthProvider>
       <html lang="en">
         <body className={poppins.className}>
-          <ReduxProvider>
-            <PHprovoider>
-              <NavBar />
-
-              {children}
-              <Footer />
-            </PHprovoider>
-          </ReduxProvider>
+          <ReduxProvider>{children}</ReduxProvider>
         </body>
       </html>
     </AuthProvider>

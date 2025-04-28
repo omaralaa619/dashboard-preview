@@ -1,36 +1,21 @@
-import AboutSection from "@/components/user/about/AboutSection";
-import Categories from "@/components/user/categories/Categories";
-import HeroSlider from "@/components/user/hero/HeroSlider";
-import ImageSection from "@/components/user/image-section/ImageSection";
-import ProductSlider from "@/components/user/product-slider/ProductSlider";
-import TextSection from "@/components/user/text-section/TextSection";
-import Timer from "@/components/user/timer/Timer";
-import { getHome } from "@/components/user/utils";
-import Image from "next/image";
+"use client";
 
-export const revalidate = 60;
-export async function generateStaticParams() {
-  return ["/"];
-}
+import { useRouter } from "next/navigation";
 
-export default async function Home() {
-  const targetDate = "2025-12-30T23:59:59";
-
-  const { products, store } = await getHome();
-
+const page = () => {
+  const router = useRouter();
   return (
-    <div className="pt-[50px]">
-      <HeroSlider slides={store.hero} />
-      {/* <Timer targetDate={targetDate} /> */}
-      <Categories categories={store.categories.reverse()} />
-      <TextSection />
-      <ProductSlider title={"Newest Arrivals"} products={products} />
-      {/* <ImageSection /> */}
-      <AboutSection />
-      <ProductSlider
-        title={"Best Selling"}
-        products={[...products].sort((a, b) => b.sold - a.sold)}
-      />
+    <div className="flex items-center justify-center h-full w-full bg-neutral-950">
+      <button
+        onClick={() => {
+          router.push("/dashboard");
+        }}
+        className="btn"
+      >
+        DASHBOARD
+      </button>
     </div>
   );
-}
+};
+
+export default page;
