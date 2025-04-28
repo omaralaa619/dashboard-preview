@@ -12,8 +12,8 @@ const poppins = IBM_Plex_Sans({
 });
 
 export const metadata = {
-  title: "Lynne",
-  description: "Lynne",
+  title: "DASHBOARD",
+  description: "DASHBOARD",
 };
 
 export default function RootLayout({ children }) {
