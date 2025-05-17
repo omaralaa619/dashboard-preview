@@ -32,7 +32,7 @@ const AnalyticsPH = ({ duration }) => {
   const fetchPH = async () => {
     try {
       const response = await fetch(
-        `https://app.posthog.com/api/projects/117029/events?event=$pageview&after=${fromDate.toISOString()}&limit=10000000`,
+        `https://app.posthog.com/api/projects/53836/events?event=$pageview&after=${fromDate.toISOString()}&limit=10000000`,
         {
           method: "GET",
           headers: {
