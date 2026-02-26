@@ -6,9 +6,10 @@ import {
   PrevButton,
   usePrevNextButtons,
 } from "./EmblaCarouselArrowButtons";
-import Container from "@/components/user/ui/Container";
+
 import CommentItem from "./CommentItem";
 import { motion } from "framer-motion";
+import Container from "@/components/user/ui/Container";
 
 const Comments = () => {
   const options = { dragFree: true };

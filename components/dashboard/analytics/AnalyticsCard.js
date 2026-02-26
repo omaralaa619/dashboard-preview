@@ -13,7 +13,7 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts";
-import Price from "@/components/user/ui/Price";
+
 import { formatNumberDashboard } from "@/lib/utils";
 
 const AnalyticsCard = ({ dataa, labelss, titlee, total, svg, duration }) => {

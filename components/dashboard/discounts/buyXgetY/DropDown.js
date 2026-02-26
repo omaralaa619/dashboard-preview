@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import classes from "./DropDown.module.css";
 import Price from "@/components/user/ui/Price";
+import classes from "./DropDown.module.css";
 
 const DropDown = ({
   open,
