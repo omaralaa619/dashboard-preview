@@ -44,7 +44,7 @@ const CartItemPreview = ({
             (() => {
               // Find discount quantity for this id
               const discountObj = discount?.productsToDiscount?.find(
-                (d) => d.id === id
+                (d) => d.id === id,
               );
               let discountedQty = discountObj ? discountObj.qty : 0;
               let discountedTotal = totalPrice - discountedQty * price;

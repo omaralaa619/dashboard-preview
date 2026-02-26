@@ -18,7 +18,7 @@ const Paymob = () => {
     const { client_secret } = await response.json();
 
     router.push(
-      `https://accept.paymob.com/unifiedcheckout/?publicKey=${process.env.PAYMOB_PUBLIC}&clientSecret=${client_secret}`
+      `https://accept.paymob.com/unifiedcheckout/?publicKey=${process.env.PAYMOB_PUBLIC}&clientSecret=${client_secret}`,
     );
 
     setLoading(false);

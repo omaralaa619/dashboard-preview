@@ -83,7 +83,7 @@ const ProductsList = ({
                   {Array.isArray(product.variants)
                     ? product.variants.reduce(
                         (acc, v) => acc + (v.stock || 0),
-                        0
+                        0,
                       )
                     : 0}{" "}
                   in stock
@@ -116,7 +116,7 @@ const ProductsList = ({
                   {Array.isArray(product.variants)
                     ? product.variants.reduce(
                         (acc, v) => acc + (v.stock || 0),
-                        0
+                        0,
                       )
                     : 0}{" "}
                   in stock
