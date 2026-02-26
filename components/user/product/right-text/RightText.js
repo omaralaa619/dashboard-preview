@@ -1,4 +1,4 @@
-import Price from "../../UI/Price";
+import Price from "../../ui/Price";
 import React, { useState } from "react";
 import PriceSection from "./PriceSection";
 import SizeSection from "./SizeSection";

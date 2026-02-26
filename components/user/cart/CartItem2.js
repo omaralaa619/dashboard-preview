@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-import Price from "../UI/Price";
+import Price from "../ui/Price";
 import { useDispatch } from "react-redux";
 import { cartActions } from "@/store/cart-store";
 
@@ -15,7 +15,7 @@ const CartItem2 = ({ item }) => {
         name: item.name,
         price: item.price,
         size: item.size,
-      })
+      }),
     );
   };
   const removeHandler = () => {

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Price from "../UI/Price";
+import Price from "../ui/Price";
 import Link from "next/link";
 
 const ProductItem = ({ product }) => {
@@ -11,7 +11,7 @@ const ProductItem = ({ product }) => {
         <div className="h-full w-full relative aspect-[4/6] mb-2">
           <Image
             fill
-            className="object-cover object-center "
+            className="object-cover object-center"
             src={product.imageUrls[0]}
             alt="category image"
             loading="eager"

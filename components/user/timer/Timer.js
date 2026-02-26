@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Button from "../UI/Button";
+import Button from "../ui/Button";
 import Link from "next/link";
 
 const Timer = ({ targetDate }) => {

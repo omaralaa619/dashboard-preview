@@ -1,4 +1,4 @@
-import Price from "../../UI/Price";
+import Price from "../../ui/Price";
 
 const PriceSection = ({ price, compareAtPrice }) => {
   return (

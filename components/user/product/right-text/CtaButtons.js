@@ -3,7 +3,7 @@ import { uiActions } from "@/store/ui-store";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useDispatch } from "react-redux";
-import Button from "../../UI/Button";
+import Button from "../../ui/Button";
 
 const CtaButtons = ({ product, size }) => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const CtaButtons = ({ product, size }) => {
         price: product.price,
         size: size,
         image: product.imageUrls[0],
-      })
+      }),
     );
     dispatch(uiActions.openCart());
   };
@@ -34,7 +34,7 @@ const CtaButtons = ({ product, size }) => {
         price: product.price,
         size: size,
         image: product.imageUrls[0],
-      })
+      }),
     );
 
     router.push("/checkout/delivery-info");
