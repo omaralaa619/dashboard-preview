@@ -7,13 +7,26 @@ import LoadingSpinner from "../UI/LoadingSpinner";
 import TextInput from "../UI/inputs/TextInput";
 import Checkbox from "../UI/Checkbox";
 import InputError from "../UI/inputs/InputError";
+import BuyXGetY from "./buyXgetY/BuyXGetY";
+import { useState, useRef, useEffect } from "react";
+import SubmitButton from "../UI/SubmitButton";
 
-const DiscountsForm = ({ submitHandler, defaultValues, submitLoading }) => {
-  console.log("default values", defaultValues);
-
+const DiscountsForm = ({
+  submitHandler,
+  defaultValues,
+  submitLoading,
+  productsXquantity,
+  setProductsXquantity,
+  productsX,
+  setProductsX,
+  productsY,
+  setProductsY,
+  productsYquantity,
+  setProductsYquantity,
+}) => {
   const searchParams = useSearchParams();
   const discountType = searchParams.get("type");
-  console.log(discountType);
+
   const valueTypeChangehandler = () => {
     setValue("value", "");
   };
@@ -30,8 +43,44 @@ const DiscountsForm = ({ submitHandler, defaultValues, submitLoading }) => {
     "isLimit",
     "isEndDate",
   ]);
+  const [xyError, setXyError] = useState("");
+  const xyErrorRef = useRef(null);
+
+  // Scroll to error message whenever it changes and is not empty
+  useEffect(() => {
+    if (xyError && xyErrorRef.current) {
+      xyErrorRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [xyError]);
+
+  const onSubmit = (data) => {
+    if (discountType === "xy") {
+      if (!productsX || productsX.length === 0) {
+        setXyError("You must select at least one product for 'Customer Buys'.");
+        return;
+      }
+      if (!productsY || productsY.length === 0) {
+        setXyError("You must select at least one product for 'Customer Gets'.");
+        return;
+      }
+      if (!productsXquantity || Number(productsXquantity) <= 0) {
+        setXyError("'Customer Buys' quantity must be greater than 0.");
+        return;
+      }
+      if (!productsYquantity || Number(productsYquantity) <= 0) {
+        setXyError("'Customer Gets' quantity must be greater than 0.");
+        return;
+      }
+    }
+    setXyError("");
+    submitHandler(data);
+  };
+
   return (
-    <form className={classes.form} onSubmit={handleSubmit(submitHandler)}>
+    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
       <Card className={classes.card}>
         <div className={classes.firstTop}>
           <p>
@@ -124,7 +173,7 @@ const DiscountsForm = ({ submitHandler, defaultValues, submitLoading }) => {
         </div>
       </Card>
 
-      {discountType != "shipping" && (
+      {discountType == "offOrder" && (
         <Card className={classes.card}>
           <div className={classes.firstTop}>
             <p>Discount value</p>
@@ -205,6 +254,25 @@ const DiscountsForm = ({ submitHandler, defaultValues, submitLoading }) => {
             </InputError>
           )}
         </Card>
+      )}
+      {discountType == "xy" && (
+        <>
+          {xyError && (
+            <InputError ref={xyErrorRef} style={{ marginTop: -8 }}>
+              {xyError}
+            </InputError>
+          )}
+          <BuyXGetY
+            productsX={productsX}
+            productsY={productsY}
+            setProductsX={setProductsX}
+            setProductsY={setProductsY}
+            setProductsXquantity={setProductsXquantity}
+            setProductsYquantity={setProductsYquantity}
+            productsXquantity={productsXquantity}
+            productsYquantity={productsYquantity}
+          />
+        </>
       )}
       <Card className={classes.card}>
         <div>
@@ -410,10 +478,10 @@ const DiscountsForm = ({ submitHandler, defaultValues, submitLoading }) => {
         </div>
       </Card>
 
-      <button type="submit" className={classes.button}>
+      <SubmitButton type="submit" className={"!-mt-3"}>
         {submitLoading && <LoadingSpinner size={18} />}
         {!submitLoading && "Save"}
-      </button>
+      </SubmitButton>
     </form>
   );
 };

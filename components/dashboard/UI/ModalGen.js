@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 const ModalGen = ({ children, open, closeModal, className }) => {
   return (
     <>
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {open && (
           <>
             <motion.div

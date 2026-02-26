@@ -7,7 +7,7 @@ import TextInput from "../../UI/inputs/TextInput";
 import { useDispatch } from "react-redux";
 import { toggleBanner } from "@/lib/banner";
 
-const Banner = ({ banner, refetch }) => {
+const Banner = ({ banner, refetch, setStoreData }) => {
   const [showForm, setShowForm] = useState(false);
   const [newBanner, setNewBanner] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,12 +29,15 @@ const Banner = ({ banner, refetch }) => {
           "content-Type": "application/json",
         },
       });
-      const oo = await res.json();
-
-      refetch();
+      const data = await res.json();
+      console.log(data, "new banner item");
 
       setLoading(false);
+      setShowForm(false);
+      setNewBanner("");
       toggleBanner(dispatch, "Store updated successfully", "ok");
+
+      setStoreData(data);
     } catch (error) {
       toggleBanner(dispatch, "Error please try again", "error");
     }
@@ -54,7 +57,6 @@ const Banner = ({ banner, refetch }) => {
       });
       const oo = await res.json();
       toggleBanner(dispatch, "Store updated successfully", "ok");
-      refetch();
     } catch (error) {
       toggleBanner(dispatch, "Error please try again", "error");
     }
@@ -79,9 +81,9 @@ const Banner = ({ banner, refetch }) => {
           {banner.content.map((item, index) => (
             <BannerItem
               item={item}
-              key={index}
+              key={item}
               banner={banner}
-              refetch={refetch}
+              setStoreData={setStoreData}
             />
           ))}
         </div>

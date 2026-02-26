@@ -1,65 +1,48 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-import useEmblaCarousel from "embla-carousel-react";
-import {
-  NextButton,
-  PrevButton,
-  usePrevNextButtons,
-} from "../product/left-image/EmblaCarouselArrowButtons";
-import Autoplay from "embla-carousel-autoplay";
 import { useSelector } from "react-redux";
 
-const Banner = ({ store }) => {
-  const banner = useSelector((state) => state.ui.store.banner.content);
+const Banner = () => {
+  const banner = useSelector((state) => state.ui.store.banner); // Selecting the full banner object
 
-  const options = { align: "start", loop: true };
+  // Generate an array of 10 repeated banner messages
+  const messages = Array(10).fill(banner.content).flat();
+  console.log(messages);
 
-  const [emblaRef, emblaApi] = useEmblaCarousel(options, [
-    Autoplay({
-      playOnInit: true,
-      delay: 4000,
-      stopOnInteraction: false,
-      stopOnMouseEnter: true,
-    }),
-  ]);
-
-  const {
-    prevBtnDisabled,
-    nextBtnDisabled,
-    onPrevButtonClick,
-    onNextButtonClick,
-  } = usePrevNextButtons(emblaApi);
   return (
-    <div className="embla relative py-2   max-w-4xl">
-      <div className="embla__viewport h-full " ref={emblaRef}>
-        <div className="embla__container  h-full">
-          {banner.map((text, index) => (
-            <div className="embla__slide" key={index}>
-              <p key={index} className="text-center text-sm">
-                {text}
-              </p>
-            </div>
-          ))}
-        </div>
+    banner.show && (
+      <div className="mx-auto h-8 flex items-center  bg-sec text-white overflow-hidden">
+        <motion.div
+          initial={{ x: 0 }}
+          animate={{ x: `-100%` }}
+          transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
+          className="flex flex-shrink-0 items-center"
+        >
+          {messages.map((message, index) => {
+            return (
+              <div className="pr-14 font-bold" key={index}>
+                {message}
+              </div>
+            );
+          })}
+        </motion.div>
+        <motion.div
+          initial={{ x: 0 }}
+          animate={{ x: `-100%` }}
+          transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
+          className="flex flex-shrink-0 items-center"
+        >
+          {messages.map((message, index) => {
+            return (
+              <div className="pr-14 font-bold" key={index}>
+                {message}
+              </div>
+            );
+          })}
+        </motion.div>
       </div>
-
-      <div className="embla__controls">
-        <div className="embla__buttons">
-          <PrevButton
-            onClick={onPrevButtonClick}
-            disabled={prevBtnDisabled}
-            className={"!w-7 !h-7"}
-          />
-          <NextButton
-            onClick={onNextButtonClick}
-            disabled={nextBtnDisabled}
-            className={"!w-7 !h-7"}
-          />
-        </div>
-      </div>
-    </div>
+    )
   );
 };
 

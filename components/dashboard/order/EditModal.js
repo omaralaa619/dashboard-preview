@@ -9,8 +9,11 @@ import EditSVG from "@/svgs/EditSVG";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import { X } from "lucide-react";
 import ModalGen from "../UI/ModalGen";
+import { useDispatch } from "react-redux";
+import { toggleBanner } from "@/lib/banner";
 
 const EditModal = ({ fetchOrder, closeHandler, deliveryInfo, id, open }) => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
   const { register, handleSubmit } = useForm({
@@ -30,7 +33,7 @@ const EditModal = ({ fetchOrder, closeHandler, deliveryInfo, id, open }) => {
         },
       });
       const response = await res.json();
-      console.log(response);
+      toggleBanner(dispatch, "Order updated successfully ", "red");
     } catch (error) {
       console.log("error");
       console.log(error);

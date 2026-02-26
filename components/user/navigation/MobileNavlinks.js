@@ -1,77 +1,136 @@
+"use client";
 import ArrowForwardSVG from "@/svgs/ArrowForwardSVG";
 import CloseX from "@/svgs/CloseX";
 import { motion } from "framer-motion";
-import MobileShop from "./MobileShop";
-import { useState } from "react";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
 
-const MobileNavlinks = ({ open, setOpen }) => {
-  const [shopOpen, setShopOpen] = useState(false);
+import { useSession } from "next-auth/react";
+import { useDispatch, useSelector } from "react-redux";
+import { uiActions } from "@/store/ui-store";
+import { Instagram, X } from "lucide-react";
+import TiktokSVG from "@/svgs/TiktokSVG";
+import WhatsappSVG from "@/svgs/WhatsappSVG";
+import FacebookSVG from "@/svgs/FacebookSVG";
+import { TransitionLink } from "../ui/TransitionLink";
+import Link from "next/link";
+
+const MobileNavlinks = () => {
   const { data: session } = useSession();
 
-  const closeHandler = () => {
-    setOpen(false);
+  const navOpen = useSelector((state) => state.ui.navOpen);
+  const categories = useSelector((state) => state.ui.collections);
+
+  const dispatch = useDispatch();
+  const toggleNavHandler = () => {
+    dispatch(uiActions.toggleNav());
   };
 
   return (
     <>
       <motion.div
         className={
-          open
-            ? "bg-black top-0 left-0 h-[100vh] w-full absolute  z-10"
-            : "hidden"
+          "bg-black top-0 left-0 h-[100vh] w-full fixed opacity-30 z-40  md:hidden"
         }
-        onClick={closeHandler}
+        onClick={toggleNavHandler}
         initial={false}
-        animate={open ? { opacity: 0.6 } : { opacity: 0 }}
-        transition={{
-          type: "tween",
-        }}
+        animate={
+          navOpen
+            ? { opacity: 0.5, pointerEvents: "all" }
+            : { opacity: 0, pointerEvents: "none" }
+        }
+        transition={navOpen ? { delay: 0.2 } : { delay: 0.5 }}
       ></motion.div>
-      <motion.div
-        initial={{ left: "-100%" }}
-        animate={open ? { left: 0 } : { left: "-100%" }}
-        className="flex flex-col absolute  top-0 md:hidden bg-acc h-[100vh] text-white w-[300px] z-10"
-      >
-        <div className=" flex flex-col">
-          <div onClick={closeHandler} className="fill-white   m-4 ">
-            <CloseX />
-          </div>
 
-          <div className="px-4">
-            <Link href={"/"}>
-              <p
-                onClick={closeHandler}
-                className="py-4 border-b pl-2  border-white/50 text-white"
-              >
-                HOME
+      {/* actual nav */}
+      <motion.div
+        initial={false}
+        animate={navOpen ? { height: "75vh" } : { height: 0 }}
+        transition={{ delay: 0.2 }}
+        className=" rounded-xl text-xl flex flex-col fixed left-1/2 -translate-x-1/2  bottom-2 md:hidden bg-white h-[70vh] text-black w-[95%] z-50 "
+      >
+        <div
+          className="flex flex-col justify-between h-full p-6 "
+          onClick={() => console.log(categories)}
+        >
+          <motion.div
+            initial={false}
+            onClick={toggleNavHandler}
+            className="absolute font-medium bg-white left-1/2 -translate-x-1/2 -top-16 rounded-full w-[48px] h-[48px] flex justify-center items-center cursor-pointer shadow-lg"
+            animate={
+              navOpen ? { opacity: 1 } : { opacity: 0, pointerEvents: "none" }
+            }
+          >
+            <X size={24} />
+          </motion.div>
+
+          <motion.div
+            initial={false}
+            className={`overflow-y-scroll`}
+            animate={navOpen ? { opacity: 1 } : { opacity: 0 }}
+            transition={
+              navOpen ? { delay: 0.5, duration: 0.3 } : { duration: 0.3 }
+            }
+          >
+            <TransitionLink href={"/"} className="text-blackblack">
+              <p onClick={toggleNavHandler} className="py-2 ">
+                Home
               </p>
-            </Link>
-            <MobileShop
-              open={shopOpen}
-              setOpen={setShopOpen}
-              closeHandler={closeHandler}
-            />
-            <Link href={"/contact"}>
-              <p
-                onClick={closeHandler}
-                className="py-4 border-b pl-2  border-white/50 text-white"
-              >
-                Contact
+            </TransitionLink>
+
+            <TransitionLink
+              href={"/collections/shop-all"}
+              className="text-black"
+            >
+              <p onClick={toggleNavHandler} className="py-2 ">
+                Shop All
               </p>
-            </Link>
+            </TransitionLink>
+
+            {categories && (
+              <>
+                {categories.map((cat) => (
+                  <TransitionLink
+                    href={`/collections/${cat.slug}`}
+                    className="text-black"
+                    key={cat.slug}
+                  >
+                    <p onClick={toggleNavHandler} className="py-2 ">
+                      {cat.title}
+                    </p>
+                  </TransitionLink>
+                ))}
+              </>
+            )}
+
             <Link href={"/dashboard"}>
               <p
-                onClick={closeHandler}
-                className={`py-4 border-b pl-2  border-white/50 text-white ${
+                onClick={toggleNavHandler}
+                className={`py-2 border-b pl-2  border-white/50 text-black ${
                   !session ? "hidden" : ""
                 }`}
               >
                 DASHBOARD
               </p>
             </Link>
-          </div>
+          </motion.div>
+
+          {/* socials  */}
+          <motion.div
+            initial={false}
+            animate={navOpen ? { opacity: 1 } : { opacity: 0 }}
+            transition={
+              navOpen ? { delay: 0.5, duration: 0.3 } : { duration: 0.3 }
+            }
+          >
+            <div className="flex gap-6  py-6 items-center">
+              <FacebookSVG />
+              <Instagram size={25} />
+              <TiktokSVG />
+              <WhatsappSVG />
+            </div>
+            <div className="pt-2 border-t border-neutral-200">
+              <p className="text-xs font-medium">Rose</p>
+            </div>
+          </motion.div>
         </div>
       </motion.div>
     </>

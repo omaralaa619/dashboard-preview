@@ -2,7 +2,7 @@ import Link from "next/link";
 import classes from "./ProductsList.module.css";
 import Checkbox from "../../UI/Checkbox";
 import Image from "next/image";
-import Price from "@/components/user/UI/Price";
+import Price from "@/components/user/ui/Price";
 
 const ProductsList = ({
   products,
@@ -80,7 +80,12 @@ const ProductsList = ({
 
               <div className={`${classes.statusAmount} ${classes.mobNone}`}>
                 <p>
-                  {product.stock.reduce((acc, obj) => acc + obj.available, 0)}{" "}
+                  {Array.isArray(product.variants)
+                    ? product.variants.reduce(
+                        (acc, v) => acc + (v.stock || 0),
+                        0
+                      )
+                    : 0}{" "}
                   in stock
                 </p>
 
@@ -108,7 +113,12 @@ const ProductsList = ({
                 </div>
 
                 <p>
-                  {product.stock.reduce((acc, obj) => acc + obj.available, 0)}{" "}
+                  {Array.isArray(product.variants)
+                    ? product.variants.reduce(
+                        (acc, v) => acc + (v.stock || 0),
+                        0
+                      )
+                    : 0}{" "}
                   in stock
                 </p>
                 <p className={`${classes.total} `}>

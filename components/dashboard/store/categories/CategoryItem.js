@@ -1,11 +1,11 @@
 import DeleteSVG from "@/svgs/DeleteSVG";
-import LoadingSpinner from "../../UI/LoadingSpinner";
 
 import classes from "./CategoryItem.module.css";
 import { useState } from "react";
 import EditSVG from "@/svgs/EditSVG";
 import CategoriesForm from "./CategoriesForm";
 import { Pencil, Trash2 } from "lucide-react";
+import LoadingSpinner from "@/components/user/ui/LoadingSpinner";
 
 const CategoryItem = ({ item, refetch, categories }) => {
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -50,18 +50,20 @@ const CategoryItem = ({ item, refetch, categories }) => {
               <Pencil size={20} strokeWidth={1.25} />
             </div>
 
-            <div
-              className={`${
-                categories.length > 1 ? "cursor-pointer" : "cursor-default"
-              }`}
+            <button
               onClick={deleteHandler}
+              disabled={
+                item?.slug === "featured" || item?.slug === "new-arrivals"
+              }
             >
               {!deleteLoading && (
                 <Trash2
                   size={20}
                   strokeWidth={1.25}
                   color={
-                    categories.length > 1
+                    categories.length > 1 &&
+                    item?.slug !== "featured" &&
+                    item?.slug !== "new-arrivals"
                       ? "var(--black)"
                       : "var(--secondaryText)"
                   }
@@ -70,7 +72,7 @@ const CategoryItem = ({ item, refetch, categories }) => {
               {deleteLoading && (
                 <LoadingSpinner size={18} color={"var(--black)"} />
               )}
-            </div>
+            </button>
           </div>
         </div>
       )}

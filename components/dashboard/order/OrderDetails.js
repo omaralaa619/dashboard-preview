@@ -6,7 +6,10 @@ import Card from "../UI/Card";
 import classes from "./OrderDetails.module.css";
 import Modal from "../UI/Modal";
 import EditModal from "./EditModal";
-import Price from "@/components/user/UI/Price";
+import Price from "@/components/user/ui/Price";
+import { useDispatch } from "react-redux";
+import { toggleBanner } from "@/lib/banner";
+import OrderLoading from "./OrderLoading";
 
 const OrderDetails = ({ id }) => {
   const router = useRouter();
@@ -21,6 +24,7 @@ const OrderDetails = ({ id }) => {
   //   setModalOpen(true);
   //   setModalType("deliver");
   // };
+  const dispatch = useDispatch();
   const fetchOrder = async () => {
     setLoading(true);
     try {
@@ -49,6 +53,7 @@ const OrderDetails = ({ id }) => {
         },
       });
       const response = await res.json();
+      toggleBanner(dispatch, "Order fulfilled successfully ", "red");
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -68,6 +73,7 @@ const OrderDetails = ({ id }) => {
       const response = await res.json();
       console.log(response);
 
+      toggleBanner(dispatch, "Order deleted successfully ", "red");
       router.push("/dashboard/orders");
     } catch (error) {
       console.log(error);
@@ -84,8 +90,6 @@ const OrderDetails = ({ id }) => {
 
   return (
     <>
-      {loading && <h1>Loading...</h1>}
-
       {!loading && (
         <EditModal
           fetchOrder={fetchOrder}
@@ -119,6 +123,8 @@ const OrderDetails = ({ id }) => {
         open={deleteModal}
         loading={loading}
       />
+
+      {loading && <OrderLoading />}
 
       {!loading && (
         <div>
@@ -163,7 +169,9 @@ const OrderDetails = ({ id }) => {
                     <div className={classes.nameSize}>
                       <p>{item.title}</p>
 
-                      <p className={classes.size}>{item.size}</p>
+                      <p className={classes.size}>
+                        {item.size} {item?.color && `/ ${item?.colorName}`}
+                      </p>
 
                       <p>x {item.quantity}</p>
                     </div>
@@ -228,6 +236,24 @@ const OrderDetails = ({ id }) => {
                     )}
                   </p>
                 </div>
+
+                <div className={classes.numbers}>
+                  <p>Payment:</p>
+                  <p className={classes.bold}>
+                    {" "}
+                    {!order?.payment || order?.payment?.paymentType == "cod"
+                      ? "COD (cash on delivery)"
+                      : "visa"}
+                  </p>
+                </div>
+                {order?.payment?.paymentType == "visa" && (
+                  <div className={classes.numbers}>
+                    <p>Payment ID:</p>
+                    <p className={classes.bold}>
+                      {order.payment.paymentDetails}
+                    </p>
+                  </div>
+                )}
               </div>
             </Card>
 

@@ -9,9 +9,15 @@ const DiscountNew = () => {
   const searchParams = useSearchParams();
   const discountType = searchParams.get("type");
   const [submitLoading, setSubmitLoading] = useState(false);
+  const [productsX, setProductsX] = useState([]);
+  const [productsY, setProductsY] = useState([]);
+  const [productsYquantity, setProductsYquantity] = useState(1);
+  const [productsXquantity, setProductsXquantity] = useState(1);
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const now = new Date();
+  const pad = (n) => n.toString().padStart(2, "0");
   const defaultValues = {
     method: "code",
     code: "code",
@@ -24,8 +30,10 @@ const DiscountNew = () => {
     minimumQuantity: 0,
     isLimit: false,
     limitNumber: "",
-    startDate: "",
-    startTime: "",
+    startDate: `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(
+      now.getDate()
+    )}`,
+    startTime: `${pad(now.getHours())}:${pad(now.getMinutes())}`,
     endDate: "",
     endTime: "",
     isEndDate: false,
@@ -61,6 +69,14 @@ const DiscountNew = () => {
           discountType,
           startDateTime,
           endDateTime,
+          productsX: {
+            products: productsX,
+            quantity: productsXquantity,
+          },
+          productsY: {
+            products: productsY,
+            quantity: productsYquantity,
+          },
         }),
       });
       const response = await res.json();
@@ -75,7 +91,12 @@ const DiscountNew = () => {
     } finally {
       setSubmitLoading(false);
     }
+    console.log("productsX", productsX);
+    console.log("productsY", productsY);
+    console.log("productsXquantity", productsXquantity);
+    console.log("productsYquantity", productsYquantity);
     console.log(data);
+    setSubmitLoading(false);
   };
   return (
     <div>
@@ -83,6 +104,14 @@ const DiscountNew = () => {
         submitHandler={submitHandler}
         submitLoading={submitLoading}
         defaultValues={defaultValues}
+        productsX={productsX}
+        productsY={productsY}
+        setProductsX={setProductsX}
+        setProductsY={setProductsY}
+        setProductsXquantity={setProductsXquantity}
+        setProductsYquantity={setProductsYquantity}
+        productsXquantity={productsXquantity}
+        productsYquantity={productsYquantity}
       />
     </div>
   );

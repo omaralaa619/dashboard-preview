@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import Discount from "@/models/discountModel";
 import { mailOptions, transporter } from "../../../lib/nodemailer";
 import { generateMail } from "@/lib/mailGenerator";
+import { revalidateTag } from "next/cache";
 
 export const GET = async (req) => {
   try {
@@ -54,35 +55,65 @@ export const POST = async (req) => {
   const { cart, address, discount } = body;
 
   for (const item of cart.items) {
-    const id = item.id.slice(0, -item.size.length);
+    const idMatch = item.id.match(/^[a-fA-F0-9]{24}/);
+    const id = idMatch ? idMatch[0] : item.id;
     const currentProduct = products.find((pro) => pro._id == id);
 
-    console.log(currentProduct);
-
-    const stock = currentProduct.stock.find(
-      (stock) => stock.optionName === item.size
-    );
-
-    if (stock.available < item.quantity) {
-      console.log("out of stock");
+    if (!currentProduct) {
       return NextResponse.json(
-        { error: "Some of the items in the cart are out of stock." },
-        { status: 500 }
-      );
-    } else {
-      await Product.findOneAndUpdate(
-        { _id: id },
-        {
-          $inc: { "stock.$[elem].available": -item.quantity },
-          sold: item.quantity,
-        },
-        {
-          arrayFilters: [{ "elem.optionName": item.size }],
-          new: true,
-        }
+        { error: `Product with id ${id} not found.` },
+        { status: 404 },
       );
     }
+
+    const variant = currentProduct.variants.find((v) => {
+      return v.size === item.size && v.colorName === (item.colorName || "");
+    });
+
+    if (!variant) {
+      return NextResponse.json(
+        { error: "Variant not found." },
+        { status: 404 },
+      );
+    }
+
+    if (variant.stock < item.quantity) {
+      return NextResponse.json(
+        { error: "Some of the products in the cart are out of stock." },
+        { status: 500 },
+      );
+    }
+
+    const updatedProduct = await Product.findOneAndUpdate(
+      { _id: id, "variants._id": variant._id },
+      {
+        $inc: {
+          "variants.$.stock": -item.quantity,
+          sold: item.quantity,
+        },
+      },
+      { new: true },
+    );
+
+    const updatedVariant = updatedProduct.variants.find(
+      (v) => v._id.toString() === variant._id.toString(),
+    );
+
+    const newStock = updatedVariant.stock;
+
+    const totalStock = updatedProduct.variants.reduce(
+      (sum, v) => sum + v.stock,
+      0,
+    );
+
+    if (newStock === 0 || totalStock === 10) {
+      revalidateTag(`product-${updatedProduct.slug}`);
+      revalidateTag(`collections`);
+      revalidateTag(`home`);
+    }
   }
+
+  // console.log(stock, "this is the stockk");
 
   if (discount?._id) {
     // Fetch the discount directly from the database
@@ -91,7 +122,7 @@ export const POST = async (req) => {
     if (!currentDiscount) {
       return NextResponse.json(
         { error: "Discount not found." },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -116,7 +147,7 @@ export const POST = async (req) => {
     if (!isActive || !meetsRequirements || !hasRemainingUses) {
       return NextResponse.json(
         { error: "The discount code is not valid or cannot be used." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -125,13 +156,13 @@ export const POST = async (req) => {
       await Discount.findByIdAndUpdate(
         discount._id,
         { $inc: { used: 1 } },
-        { new: true }
+        { new: true },
       );
     } catch (error) {
       console.log("Error updating discount:", error);
       return NextResponse.json(
         { error: "Failed to update discount usage." },
-        { status: 500 }
+        { status: 500 },
       );
     }
   }
@@ -205,7 +236,7 @@ export const PUT = async (req) => {
           $set: {
             status: true,
           },
-        }
+        },
       );
       return NextResponse.json(res);
     } catch (error) {

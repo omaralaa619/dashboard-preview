@@ -1,6 +1,6 @@
 import classes from "./ListItem.module.css";
 const ListItem = ({ item, max }) => {
-  const progress = (item.count / max) * 100;
+  const progress = (item.col1 / max) * 100;
   return (
     <div className={classes.main}>
       <div className={classes.inner}>
@@ -8,8 +8,8 @@ const ListItem = ({ item, max }) => {
           className={classes.progress}
           style={{ width: `${progress}%` }}
         ></div>
-        <p>{item.group}</p>
-        <p>{item.count}</p>
+        <p>{item.col0}</p>
+        <p>{item.col1}</p>
       </div>
     </div>
   );

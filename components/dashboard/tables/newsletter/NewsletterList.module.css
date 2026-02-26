@@ -1,0 +1,42 @@
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+
+  border-radius: var(--radius);
+  border-bottom: 1px solid var(--borders);
+  gap: 4px;
+  transition: background 0.2s ease;
+}
+.row p {
+  flex: 1;
+}
+
+.row:hover {
+  background: var(--tableMuted);
+}
+.header {
+  font-size: 14px;
+  color: var(--secondaryText);
+  border-top: 1px solid var(--borders);
+}
+.header p {
+  color: var(--secondaryText);
+}
+.header:hover {
+  background: none;
+}
+.container {
+  display: flex;
+
+  position: relative;
+
+  padding: 16px 48px 16px 48px;
+
+  cursor: pointer;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

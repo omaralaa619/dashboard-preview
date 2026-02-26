@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
     <AuthProvider>
       <ReduxProvider>
         <html lang="en">
-          <body className={poppins.className} data-theme="dark">
+          <body className={`${poppins.className}`} data-theme="dark">
             <Sidebar>{children}</Sidebar>
           </body>
         </html>

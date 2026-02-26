@@ -50,7 +50,7 @@ const MediaInputImage = ({ imageSrcHandler, file, setFiles, productId }) => {
         onClick={(e) => deleteImageHandler(file, e)}
       >
         {!loading && <CloseX />}
-        {loading && <LoadingSpinner size={10} />}
+        {loading && <LoadingSpinner size={10} dark={true} />}
       </p>
     </div>
   );

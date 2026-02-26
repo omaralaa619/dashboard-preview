@@ -111,7 +111,9 @@ const SelectOptions = ({ checkedOrders, fetchOrders, setCheckedOrders }) => {
           title={"More Actions"}
           dropdownItems={dropownItems}
           gap={"8px"}
-          className={checkedOrders.length == 0 ? classes.pointerEvents : ""}
+          className={`${
+            checkedOrders.length == 0 ? classes.pointerEvents : ""
+          } ${classes.comboBox}`}
         />
       </div>
     </>

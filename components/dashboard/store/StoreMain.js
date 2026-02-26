@@ -3,6 +3,11 @@ import HeroList from "./HomeImage.js/HeroList";
 import CategoriesList from "./categories/CategoriesList";
 import Timer from "./timer/Timer";
 import Banner from "./banner/Banner";
+import ImageGallery from "./imageGallery/ImageGallery";
+import Comments from "./comments/Comments";
+import ImageSection from "./imageSection/ImageSection";
+import ImageAnimation from "./imageAnimation/ImageAnimation";
+import LoadingStore from "./LoadingStore";
 
 const StoreMain = () => {
   const [storeData, setStoreData] = useState({});
@@ -23,32 +28,52 @@ const StoreMain = () => {
   useEffect(() => {
     fetchStoreData();
   }, []);
+
   return (
     <>
       {loading ? (
-        <p>Loading...</p>
+        <LoadingStore />
       ) : (
-        storeData.categories && (
-          <div className="w-full">
-            <div>
-              <Banner banner={storeData.banner} refetch={fetchStoreData} />
-            </div>
-            <div className="w-full ">
-              <HeroList hero={storeData.hero} refetch={fetchStoreData} />
-            </div>
+        <div className="w-full flex flex-col mt-9 gap-9 ">
+          <div>
+            <Banner banner={storeData.banner} setStoreData={setStoreData} />
+          </div>
+          <div className="w-full ">
+            <HeroList hero={storeData.hero} setStoreData={setStoreData} />
+          </div>
 
-            <div>
+          {/* <div>
               <CategoriesList
                 categories={storeData.categories}
                 refetch={fetchStoreData}
               />
-            </div>
-
-            {/* <div>
-              <Timer data={storeData} />
             </div> */}
+
+          <div>
+            <ImageGallery
+              images={storeData.imageGallery}
+              setStoreData={setStoreData}
+            />
           </div>
-        )
+          <div>
+            <Comments
+              comments={storeData.comments}
+              setStoreData={setStoreData}
+            />
+          </div>
+          <div>
+            <ImageSection
+              image={storeData.imageSection}
+              setStoreData={setStoreData}
+            />
+          </div>
+          <div>
+            <ImageAnimation
+              image={storeData.imageAnimation}
+              setStoreData={setStoreData}
+            />
+          </div>
+        </div>
       )}
     </>
   );

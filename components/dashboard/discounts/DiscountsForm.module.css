@@ -185,6 +185,23 @@
   user-select: none;
 }
 
+.browse {
+  background: var(--black);
+
+  color: var(--background);
+  border: none;
+  transition: background 0.2s ease;
+  padding: 8px 24px;
+
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.black {
+  fill: var(--black);
+}
+
 /* Create a custom checkbox */
 
 @media (max-width: 990px) {

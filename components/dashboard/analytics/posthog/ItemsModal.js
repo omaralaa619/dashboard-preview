@@ -13,7 +13,7 @@ const ItemsModal = ({ groupByUrl, closeModal, modal }) => {
         </div>
         <div className={classes.list}>
           {groupByUrl.map((item) => (
-            <ListItem key={item.group} item={item} max={groupByUrl[0].count} />
+            <ListItem key={item.group} item={item} max={groupByUrl[0].col1} />
           ))}
         </div>
         <div className={classes.closeContainer}>

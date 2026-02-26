@@ -1,5 +1,6 @@
 import connectDB from "@/lib/connectDB";
 import Store from "@/models/storeModel";
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { UTApi } from "uploadthing/server";
 
@@ -24,7 +25,7 @@ export const POST = async (req) => {
 
   try {
     switch (body.type) {
-      case "category":
+      case "category": {
         const slug = body.title
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-")
@@ -33,186 +34,240 @@ export const POST = async (req) => {
         storeData.categories.push({
           title: body.title,
           imageUrl: body.imageUrl,
-          slug: slug,
+          slug,
         });
-        // Save the updated store data
-        await storeData.save();
+
         break;
-      case "hero":
+      }
+
+      case "hero": {
         storeData.hero.push({
           header: body.header,
           subheader: body.subheader,
           imageUrl: body.imageUrl,
+          mediaType: body.mediaType,
         });
-        // Save the updated store data
-        await storeData.save();
-
         break;
+      }
 
-      case "banner":
+      case "banner": {
         storeData.banner.content.push(body.content);
-        await storeData.save();
         break;
+      }
 
-      case "timer":
+      case "timer": {
         storeData.timer.header = body.header;
         storeData.timer.timeLeft = body.timeLeft;
-        await storeData.save();
-
         break;
+      }
+
+      case "imageGallery": {
+        storeData.imageGallery[body.index] = body.imageUrl;
+        break;
+      }
+
+      case "comment": {
+        storeData.comments.push(body.content);
+        break;
+      }
+
+      case "imageAnimation": {
+        storeData.imageAnimation = body.content;
+        break;
+      }
+
+      case "imageSection": {
+        storeData.imageSection = body.content;
+        break;
+      }
+
+      default:
+        return NextResponse.json({ message: "Invalid type" }, { status: 400 });
     }
 
-    console.log("done");
+    // ✅ Save once
+    const updatedStore = await storeData.save();
 
-    return NextResponse.json({ message: "done" });
+    // ✅ Revalidate once
+    revalidateTag("home");
+
+    // ✅ Respond once
+    return NextResponse.json(updatedStore);
   } catch (error) {
-    console.log(error);
+    console.log("error", error);
 
-    console.log("done");
-    return NextResponse.json({ error: error });
+    return NextResponse.json({ error }, { status: 500 });
   }
 };
 
 export const PUT = async (req) => {
-  connectDB();
+  try {
+    await connectDB();
 
-  const body = await req.json();
+    const body = await req.json();
+    const storeData = await Store.findOne({});
 
-  const storeData = await Store.findOne({});
+    if (!storeData) {
+      return NextResponse.json({ error: "Store not found" }, { status: 404 });
+    }
 
-  switch (body.type) {
-    case "category":
-      try {
-        const categoryIndex = storeData.categories.findIndex(
-          (item) => item._id.toString() === body.id
+    switch (body.type) {
+      case "category": {
+        const slug = body.title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+
+        const index = storeData.categories.findIndex(
+          (item) => item._id.toString() === body.id,
         );
 
-        storeData.categories[categoryIndex] = {
-          title: body.title,
-          imageUrl: body.imageUrl,
-        };
-        await storeData.save();
-        return NextResponse.json({ message: "done" });
-      } catch (error) {
-        console.log(error);
+        if (index !== -1) {
+          storeData.categories[index] = {
+            title: body.title,
+            imageUrl: body.imageUrl,
+            slug,
+            date: body.date,
+          };
+        }
 
-        console.log("done");
-        return NextResponse.json({ error: error });
+        break;
       }
 
-      break;
-    case "hero":
-      try {
-        const heroIndex = storeData.hero.findIndex(
-          (item) => item._id.toString() === body.id
+      case "hero": {
+        const index = storeData.hero.findIndex(
+          (item) => item._id.toString() === body.id,
         );
 
-        storeData.hero[heroIndex] = {
-          header: body.header,
-          subheader: body.subheader,
-          imageUrl: body.imageUrl,
-        };
-        await storeData.save();
-        return NextResponse.json({ message: "done" });
-      } catch (error) {
-        console.log(error);
+        if (index !== -1) {
+          storeData.hero[index] = {
+            header: body.header,
+            subheader: body.subheader,
+            imageUrl: body.imageUrl,
+            mediaType: body.mediaType,
+          };
+        }
 
-        console.log("done");
-        return NextResponse.json({ error: error });
+        break;
       }
 
-      break;
+      case "banner": {
+        const index = storeData.banner.content.findIndex(
+          (item) => item === body.default,
+        );
 
-    case "banner":
-      const bannerIndex = storeData.banner.content.findIndex(
-        (item) => item == body.default
-      );
+        if (index !== -1) {
+          storeData.banner.content[index] = body.content;
+        }
 
-      console.log(bannerIndex);
+        break;
+      }
 
-      storeData.banner.content[bannerIndex] = body.content;
-      await storeData.save();
-      return NextResponse.json({ message: "done" });
+      case "banner-show":
+        storeData.banner.show = body.value;
+        break;
 
-      break;
-    case "banner-show":
-      storeData.banner.show = body.value;
-      await storeData.save();
+      case "comment": {
+        const index = storeData.comments.findIndex(
+          (item) => item === body.default,
+        );
 
-      console.log(body.value);
+        if (index !== -1) {
+          storeData.comments[index] = body.content;
+        }
 
-      return NextResponse.json({ message: "done" });
+        break;
+      }
 
-      break;
+      case "imageAnimation":
+        storeData.imageAnimation = body.content;
+        break;
+
+      default:
+        return NextResponse.json({ error: "Invalid type" }, { status: 400 });
+    }
+
+    const updatedStore = await storeData.save();
+
+    // 🔥 Revalidate homepage only once
+    revalidateTag("home");
+
+    return NextResponse.json(updatedStore);
+  } catch (error) {
+    console.log("error", error);
+
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 };
 
 export const DELETE = async (req) => {
-  const body = await req.json();
+  try {
+    await connectDB();
 
-  switch (body.type) {
-    case "category":
-      try {
-        connectDB();
-        const utapi = new UTApi();
+    const body = await req.json();
+    const storeData = await Store.findOne({});
 
-        const storeData = await Store.findOne({});
+    if (!storeData) {
+      return NextResponse.json({ error: "Store not found" }, { status: 404 });
+    }
 
+    const utapi = new UTApi();
+
+    switch (body.type) {
+      case "category":
         storeData.categories = storeData.categories.filter(
-          (category) => category.title !== body.title
+          (category) => category.title !== body.title,
         );
 
-        await storeData.save();
+        if (body.defaultImage) {
+          const fileId = body.defaultImage.split("/")[4];
+          await utapi.deleteFiles(fileId);
+        }
 
-        const id = body.defaultImage.split("/")[4];
-        const res = await utapi.deleteFiles(id);
+        break;
 
-        return NextResponse.json({ message: "done" });
-      } catch (error) {
-        console.log(error);
-        return NextResponse.json(error);
-      }
-
-    case "hero":
-      try {
-        connectDB();
-
-        const utapi = new UTApi();
-
-        const storeData = await Store.findOne({});
-
+      case "hero":
         storeData.hero = storeData.hero.filter(
-          (item) => item.header !== body.header
+          (item) => item.header !== body.header,
         );
 
-        await storeData.save();
+        if (body.defaultImage) {
+          const fileId = body.defaultImage.split("/")[4];
+          await utapi.deleteFiles(fileId);
+        }
 
-        const id = body.defaultImage.split("/")[4];
-        const res = await utapi.deleteFiles(id);
+        break;
 
-        return NextResponse.json({ message: "done" });
-      } catch (error) {
-        console.log(error);
-        return NextResponse.json(error);
-      }
-    case "banner":
-      try {
-        connectDB();
-
-        const storeData = await Store.findOne({});
-
+      case "banner":
         storeData.banner.content = storeData.banner.content.filter(
-          (item) => item !== body.content
+          (item) => item !== body.content,
         );
+        break;
 
-        await storeData.save();
+      case "comment":
+        storeData.comments = storeData.comments.filter(
+          (item) => item !== body.content,
+        );
+        break;
 
-        return NextResponse.json({ message: "done" });
-      } catch (error) {
-        console.log(error);
-        return NextResponse.json(error);
-      }
+      default:
+        return NextResponse.json({ error: "Invalid type" }, { status: 400 });
+    }
+
+    const updatedStore = await storeData.save();
+
+    // 🔥 Only revalidate once
+    revalidateTag("home");
+
+    return NextResponse.json(updatedStore);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
   }
-
-  return NextResponse.json({ message: "done" });
 };

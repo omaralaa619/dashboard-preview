@@ -5,7 +5,7 @@ import HeroForm from "./HeroForm";
 import HeroItem from "./HeroItem";
 import classes from "../categories/CategoriesList.module.css";
 
-const HeroList = ({ loading, hero, refetch }) => {
+const HeroList = ({ loading, hero, setStoreData }) => {
   const [showForm, setSHowForm] = useState(false);
 
   return (
@@ -16,7 +16,12 @@ const HeroList = ({ loading, hero, refetch }) => {
             <h3 className={classes.title}>Hero</h3>
           </div>
           {hero.map((item, index) => (
-            <HeroItem key={index} item={item} refetch={refetch} hero={hero} />
+            <HeroItem
+              key={index}
+              item={item}
+              setStoreData={setStoreData}
+              hero={hero}
+            />
           ))}
 
           {!showForm && (
@@ -27,7 +32,7 @@ const HeroList = ({ loading, hero, refetch }) => {
 
           {showForm && (
             <HeroForm
-              refetch={refetch}
+              setStoreData={setStoreData}
               close={() => setSHowForm(false)}
               type={"add"}
             />

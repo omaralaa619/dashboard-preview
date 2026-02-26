@@ -78,9 +78,7 @@
 .image {
   width: 50px;
 }
-.size {
-  font-weight: bold;
-}
+
 .totals {
   display: flex;
   flex-direction: column;

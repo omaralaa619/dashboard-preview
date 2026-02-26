@@ -2,6 +2,8 @@
   width: 100%;
   padding: 16px;
   fill: var(--secondaryText);
+  background: var(--zincGradient);
+  overflow: hidden;
 }
 .main svg {
   width: 16px;
@@ -10,8 +12,9 @@
 .titleContainer {
   display: flex;
   justify-content: space-between;
-
-  margin-bottom: 16px;
+}
+.titleContainer svg {
+  stroke: var(--secondaryText);
 }
 
 .title {
@@ -22,7 +25,6 @@
 .number {
   color: var(--black);
   font-size: 24px;
-  font-weight: bold;
 }
 
 .percentage {

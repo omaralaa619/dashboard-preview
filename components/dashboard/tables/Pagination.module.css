@@ -9,9 +9,9 @@
   align-items: center;
   justify-content: center;
 
-  background: var(--black);
+  background: var(--muted);
 
-  color: var(--background);
+  color: var(--black);
   border: var(--black);
   transition: background 0.2s ease;
   padding: 8px;
@@ -19,7 +19,7 @@
   border: 2px solid var(--borders);
 
   border-radius: 4px;
-  fill: var(--background);
+  fill: var(--black);
   border: none;
   cursor: pointer;
 }
@@ -34,12 +34,13 @@
 
 .paginationNext {
   transform: rotate(180deg) translateY(10%);
+  margin-bottom: -2px;
 }
 
 .paginationSelect {
   padding: 7px;
   border-radius: 4px;
   cursor: pointer;
-  background: var(--background);
+  background: none;
   color: var(--black);
 }

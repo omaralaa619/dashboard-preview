@@ -76,6 +76,26 @@ const DiscountModal = () => {
           </div>
         </div>
       </Link>
+      <Link href={"discounts/new?type=xy"}>
+        <div className={classes.item} onClick={itemHandler}>
+          <div>
+            <p className={classes.itemTitle}>Buy X get y</p>
+            <p className={classes.itemSubtitle}>Discount specific products.</p>
+          </div>
+          <div className={classes.rightContainer}>
+            <div className={classes.itemRight}>
+              <span className={classes.ship}>
+                <ShipSVG />
+              </span>
+              X get Y
+            </div>
+
+            <div className={classes.arrow}>
+              <ArrowBackSVG />
+            </div>
+          </div>
+        </div>
+      </Link>
       <div className={classes.buttonContainer}>
         <button onClick={modalHandler}>Cancel</button>
       </div>

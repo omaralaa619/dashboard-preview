@@ -12,13 +12,13 @@ import ArrowBackSVG from "@/svgs/ArrowBackSVG";
 import LoadingSkeleton from "@/components/dashboard/analytics/posthog/LoadingSkeleton";
 import Skeleton from "@/components/dashboard/UI/Skeleton";
 import DiscountInput from "./DiscountInput";
-import Price from "../UI/Price";
+import Price from "../ui/Price";
 
 const CartPreview = ({ discount, setDiscount, loading }) => {
-  // console.log(discount);
   const cartItems = useSelector((state) => state.cart);
 
   const [open, setOpen] = useState(false);
+  const [discountError, setDiscountError] = useState(null);
 
   const showSummary = open ? "Hide order summary" : "Show order summary";
 
@@ -27,21 +27,31 @@ const CartPreview = ({ discount, setDiscount, loading }) => {
   if (cartItems.shipping.price > 0) {
     shippingContent = <Price number={cartItems.shipping.price} />;
   }
+  let total = cartItems.totalAmount;
+
+  if (discount) {
+    if (discount.type === "shipping") {
+      total = cartItems.totalAmount;
+    } else {
+      total =
+        cartItems.totalAmount + cartItems.shipping.price - discount.amount;
+    }
+  }
+  if (!discount) {
+    total = cartItems.totalAmount + cartItems.shipping.price;
+  }
 
   return (
     <motion.div className={classes.root}>
       <motion.div
-        animate={open ? { height: "100%" } : { height: 60 }}
+        animate={open ? { height: "100%" } : { height: 70 }}
         transition={{
           type: "tween",
         }}
-        className={classes.container}
+        className={`${classes.container} `}
       >
         <div className={classes.summary} onClick={() => setOpen(!open)}>
           <div className={classes.showSummary}>
-            <div className={classes.cart}>
-              <CartSVG />
-            </div>
             <p>{showSummary}</p>
             <motion.div
               className={classes.arrow}
@@ -54,8 +64,16 @@ const CartPreview = ({ discount, setDiscount, loading }) => {
               <ArrowBackSVG />
             </motion.div>
           </div>
-          <span>
-            <Price number={cartItems.totalAmount + cartItems.shipping.price} />
+          <span className={classes.summaryTotal}>
+            {!loading && <Price number={total} />}
+            {loading && (
+              <Skeleton
+                rows={1}
+                height={15}
+                width={50}
+                className={classes.noMargin}
+              />
+            )}
           </span>
         </div>
 
@@ -68,15 +86,22 @@ const CartPreview = ({ discount, setDiscount, loading }) => {
               size={item.size}
               image={item.image}
               qty={item.quantity}
+              color={item.colorName} // Added color prop
+              discount={discount}
+              id={item.id}
+              price={item.price}
             />
           ))}
         </ul>
 
         <div className={classes.totals}>
+          {discountError && <p className="text-red-700">{discountError}</p>}
           <DiscountInput
             totalAmount={cartItems.totalAmount}
             totalQuantity={cartItems.totalQuantity}
             setDiscount={setDiscount}
+            setDiscountError={setDiscountError}
+            cart={cartItems}
           />
 
           {loading && (
@@ -102,10 +127,10 @@ const CartPreview = ({ discount, setDiscount, loading }) => {
                 <div className={classes.shipping}>
                   <p>Discount - ({discount.title})</p>
 
-                  {discount.type === "shipping" && <span>Free Shipping</span>}
+                  {discount.type == "shipping" && <span>Free shipping</span>}
                   {discount.type != "shipping" && (
                     <span>
-                      <Price number={discount.amount}> </Price>
+                      <Price number={-discount.amount} />
                     </span>
                   )}
                 </div>
@@ -117,29 +142,9 @@ const CartPreview = ({ discount, setDiscount, loading }) => {
 
                 {/* //////////////////////////////////////// */}
 
-                {discount && (
-                  <span>
-                    {discount.type == "shipping" ? (
-                      <Price number={cartItems.totalAmount} />
-                    ) : (
-                      <Price
-                        number={
-                          cartItems.totalAmount +
-                          cartItems.shipping.price -
-                          discount.amount
-                        }
-                      />
-                    )}
-                  </span>
-                )}
-
-                {!discount && (
-                  <span>
-                    <Price
-                      number={cartItems.totalAmount + cartItems.shipping.price}
-                    />
-                  </span>
-                )}
+                <span>
+                  <Price number={total} />
+                </span>
               </div>
             </>
           )}

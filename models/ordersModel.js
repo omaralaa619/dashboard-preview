@@ -69,6 +69,16 @@ const ordersSchema = new Schema({
       type: Number,
     },
   },
+  payment: {
+    paymentType: {
+      type: String,
+      default: "cod",
+    },
+    paymentDetails: {
+      type: String,
+      default: "n/a",
+    },
+  },
 });
 ordersSchema.pre("save", function (next) {
   this._id = this._id.toString();

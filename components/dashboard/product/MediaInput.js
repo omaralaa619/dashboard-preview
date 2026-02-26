@@ -28,8 +28,6 @@ const MediaInput = ({ files, setFiles, permittedFileInfo, productId }) => {
     accept: fileTypes ? generateClientDropzoneAccept(fileTypes) : undefined,
   });
 
-  let buttonText = files.length > 0 ? "Add" : "Upload new";
-
   const imageSrcHandler = (file) => {
     if (typeof file == "object") {
       return {
@@ -56,12 +54,9 @@ const MediaInput = ({ files, setFiles, permittedFileInfo, productId }) => {
         />
       ))}
 
-      <div
-        className={` ${files.length > 0 ? classes.mediaLabelAdd : ""}`}
-        {...getRootProps()}
-      >
+      <div {...getRootProps()}>
         <input onChange={() => console.log("files")} {...getInputProps()} />
-        <p className={classes.mediaLabel}>{buttonText}</p>
+        <p className={classes.mediaLabel}>Add Image</p>
       </div>
     </>
   );

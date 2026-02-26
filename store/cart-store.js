@@ -4,7 +4,7 @@ const initialState = {
   items: [],
   totalQuantity: 0,
   totalAmount: 0,
-  shipping: { city: "cairo", price: 60 },
+  shipping: { city: "cairo", price: 70 },
 };
 
 const cartSclice = createSlice({
@@ -25,14 +25,19 @@ const cartSclice = createSlice({
 
       state.totalAmount += action.payload.price;
 
-      if (!existingItem || existingItem?.size != newItem.size) {
+      if (
+        !existingItem ||
+        existingItem?.size != newItem.size ||
+        existingItem?.color != newItem.color
+      ) {
         state.items.push({
           id: newItem.id,
           price: newItem.price,
           quantity: 1,
           totalPrice: newItem.price,
           size: newItem.size,
-
+          color: newItem.color,
+          colorName: newItem.colorName,
           title: newItem.title,
           image: newItem.image,
         });
@@ -59,6 +64,8 @@ const cartSclice = createSlice({
         quantity: 1,
         totalPrice: item.price,
         size: item.size,
+        color: item.color,
+        colorName: item.colorName,
         title: item.title,
         image: item.image,
       });
@@ -71,8 +78,11 @@ const cartSclice = createSlice({
     removeItemFromCart(state, action) {
       const id = action.payload.id;
       const size = action.payload.size;
+      const color = action.payload.color;
 
-      const existingItem = state.items.find((item) => item.id === id);
+      const existingItem = state.items.find(
+        (item) => item.id === id && item.size === size && item.color === color
+      );
 
       state.totalQuantity--;
       state.totalAmount -= existingItem.price;
@@ -80,7 +90,9 @@ const cartSclice = createSlice({
 
       existingItem.totalPrice = existingItem.totalPrice - existingItem.price;
       if (existingItem.quantity === 1) {
-        state.items = state.items.filter((item) => item.id !== id);
+        state.items = state.items.filter(
+          (item) => item.id !== id || item.size !== size || item.color !== color
+        );
       } else {
         existingItem.quantity--;
       }
@@ -92,6 +104,9 @@ const cartSclice = createSlice({
     },
     updateShipping(state, action) {
       state.shipping.city = action.payload.city;
+      state.shipping.price = action.payload.price;
+    },
+    updateShippingPrice(state, action) {
       state.shipping.price = action.payload.price;
     },
   },

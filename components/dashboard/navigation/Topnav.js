@@ -15,6 +15,7 @@ import ThemeButton from "./ThemeButton";
 import Banner from "../UI/Banner";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import LocaleLogo from "@/svgs/LcaleLogo";
 
 const Topnav = () => {
   const dispatch = useDispatch();
@@ -98,7 +99,7 @@ const Topnav = () => {
         </motion.div>
 
         <ComboBox
-          title={"User"}
+          title={"Local"}
           titleSVG={<Circle />}
           dropdownItems={dropownItems}
           gap={"64px"}
@@ -108,7 +109,8 @@ const Topnav = () => {
         {/* <p className={classes.date}>4 January 2025</p> */}
 
         <div className={classes.mobileLogo}>
-          <p className="text-2xl">DASHBOARD</p>
+          <LocaleLogo className="w-6 h-6" />
+          <h1 className="text-xl tracking-[0.3em] uppercase">Locale</h1>
         </div>
 
         <ThemeButton />

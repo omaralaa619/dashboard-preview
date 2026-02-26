@@ -15,6 +15,7 @@ const storeSchema = new Schema({
         required: true,
         type: String,
       },
+      date: { type: Date, default: Date.now },
     },
   ],
   banner: {
@@ -43,6 +44,10 @@ const storeSchema = new Schema({
         required: true,
         type: String,
       },
+      mediaType: {
+        required: true,
+        type: String,
+      },
     },
   ],
 
@@ -55,6 +60,27 @@ const storeSchema = new Schema({
       required: true,
       type: String,
     },
+  },
+
+  imageGallery: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
+  comments: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
+  imageSection: {
+    type: String,
+    required: true,
+  },
+  imageAnimation: {
+    type: String,
+    required: true,
   },
 });
 

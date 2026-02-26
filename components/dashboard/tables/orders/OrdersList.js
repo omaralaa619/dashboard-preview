@@ -1,7 +1,7 @@
 import Link from "next/link";
 import classes from "./OrdersList.module.css";
 import Checkbox from "../../UI/Checkbox";
-import Price from "@/components/user/UI/Price";
+import Price from "@/components/user/ui/Price";
 
 const OrdersList = ({
   orders,

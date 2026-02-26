@@ -4,19 +4,34 @@ import CloseX from "@/svgs/CloseX";
 import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from "@/store/ui-store";
 import CartItem from "./CartItem";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { X } from "lucide-react";
-import CartItem2 from "./CartItem2";
-import Button from "../UI/Button";
-import Price from "../UI/Price";
+import { LockKeyhole, X } from "lucide-react";
+import Button from "../ui/Button";
+
 import Link from "next/link";
+import Price from "../product/Price";
+import CartSVG from "@/svgs/CartSVG";
 
 const Cart = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const show = useSelector((state) => state.ui.cartOpen);
   const cart = useSelector((state) => state.cart);
+
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+
+    const handleChange = (e) => setIsDesktop(e.matches);
+
+    setIsDesktop(mediaQuery.matches);
+
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
 
   const closeHandler = () => {
     dispatch(uiActions.closeCart());
@@ -36,86 +51,103 @@ const Cart = () => {
   }, [show]);
 
   return (
-    <AnimatePresence>
-      {show && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed top-0 left-0 w-full h-full bg-black/60 z-10 "
-            onClick={closeHandler}
-          ></motion.div>
-          <motion.div
-            className="fixed right-0 top-0 w-[400px] max-w-[95%] h-full  bg-white  overflow-y-scroll flex flex-col z-20 mb-10"
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "ease" }}
-          >
-            <div className="flex justify-between items-center relative p-2 border-b border-neutral-400 ">
-              <button onClick={closeHandler} className="p-1">
-                <X />
-              </button>
-              <p className="text-lg font-medium ">cart</p>
-              <p className="text-sm">{cart.totalQuantity} Item(s)</p>
-            </div>
+    <>
+      <motion.div
+        className={
+          "bg-black top-0 left-0 h-[100vh] w-full fixed opacity-30 z-40 "
+        }
+        onClick={closeHandler}
+        initial={false}
+        animate={
+          show
+            ? { opacity: 0.5, pointerEvents: "all" }
+            : { opacity: 0, pointerEvents: "none" }
+        }
+        transition={show ? { delay: 0.2 } : { delay: 0.5 }}
+      ></motion.div>
 
-            {cart.items.length != 0 && (
-              <div className="flex flex-col ">
+      <motion.div
+        animate={show ? { width: isDesktop ? "600px" : "96%" } : { width: 0 }}
+        transition={{ delay: 0.2 }}
+        className={`rounded-xl  md:flex flex-col right-[2%] fixed top-1/2 -translate-y-1/2  bg-white h-[95%] text-black z-50 origin-right  ${
+          show ? "" : "pointer-events-none"
+        }`}
+        initial={false}
+      >
+        <motion.div
+          animate={show ? { opacity: 1 } : { opacity: 0 }}
+          transition={show ? { delay: 0.5, duration: 0.3 } : { duration: 0.3 }}
+          className="relative flex flex-col h-full"
+          initial={false}
+        >
+          {/* Header */}
+          {cart.items.length != 0 && (
+            <div className="flex flex-col h-full">
+              {/* Header */}
+              <div className="flex justify-between items-center py-5 px-6">
+                <p className="text-lg flex items-center gap-2">
+                  Cart
+                  <span className="bg-sec text-prim w-6 h-6 flex items-center justify-center rounded-full text-xs">
+                    {cart.totalQuantity}
+                  </span>
+                </p>
+                <button onClick={closeHandler} className="p-1">
+                  <X size={22} />
+                </button>
+              </div>
+
+              {/* Scrollable items */}
+              <div className="flex-1 flex flex-col overflow-y-auto px-6 gap-5 pb-4">
                 {cart.items.map((item) => (
                   <CartItem item={item} key={item.id} />
                 ))}
               </div>
-            )}
-            {/* <div className="flex flex-col gap-10">
-              {cart.items.map((item) => (
-                <CartItem2 item={item} key={item.id} />
-              ))}
-            </div> */}
 
-            {cart.items.length != 0 && (
-              <div className="mx-4 flex flex-col gap-3 text-lg mt-8 pb-5 border-b border-neutral-400/50">
-                <div className="flex justify-between">
-                  <p>Subtotal</p>
-                  <Price number={cart.totalAmount} />
-                </div>
-                <div className="flex justify-between text-sm text-neutral-700">
-                  <p>Shipping</p>
-                  <p>Calculated at checkout</p>
-                </div>
-              </div>
-            )}
-
-            {cart.items.length != 0 && (
-              <div className="mx-4 mt-5 flex flex-col gap-4">
-                <div className="flex justify-between text-xl font-medium">
+              {/* Footer (sticks to bottom) */}
+              <div className="p-6 border-t">
+                <div className="flex justify-between text-lg">
                   <p>Total</p>
                   <Price number={cart.totalAmount} />
                 </div>
 
-                <Link href={"/checkout/delivery-info"}>
-                  <Button
-                    className={
-                      "rounded-sm bg-prim border border-prim text-white w-full"
-                    }
-                    onClick={closeHandler}
-                  >
-                    Checkout
-                  </Button>
-                </Link>
+                <p className="text-xs text-neutral-600">
+                  Taxes and shipping calculated at checkout
+                </p>
+                <button
+                  className="bg-sec font-bold border  text-prim  text-center rounded-full w-[100%] flex items-center justify-center mt-4 py-3 gap-3 text-base"
+                  onClick={checkoutHandler}
+                >
+                  <LockKeyhole size={20} /> Checkout
+                </button>
               </div>
-            )}
+            </div>
+          )}
 
-            {cart.items.length == 0 && (
-              <div className="flex justify-center items-center h-full">
-                <p className="text-center text-2xl ">Your cart is empty</p>
+          {cart.items.length == 0 && (
+            <>
+              <button onClick={closeHandler} className="ml-auto m-10">
+                <X size={22} />
+              </button>
+              <div className="flex flex-col h-full justify-center items-center gap-6">
+                <div className="stroke-black relative w-fit">
+                  <CartSVG size={48} stroke={1} />
+                  <div className="absolute -top-1.5 -right-1.5 bg-sec text-prim w-6 h-6 rounded-full flex items-center justify-center text-xs  font-bold">
+                    {cart.totalQuantity}
+                  </div>
+                </div>
+                <p className="text-lg">Your cart is empty</p>
+                <button
+                  onClick={closeHandler}
+                  className="bg-sec font-bold border  text-prim  text-center rounded-full  flex items-center justify-center  py-4 px-6 gap-3 text-base"
+                >
+                  Continue Shopping
+                </button>
               </div>
-            )}
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+            </>
+          )}
+        </motion.div>
+      </motion.div>
+    </>
   );
 };
 

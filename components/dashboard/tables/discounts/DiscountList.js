@@ -55,13 +55,23 @@ const DiscountList = ({
               href={`/dashboard/discounts/${discount._id}?type=${discount.discountType}`}
             >
               <p className={classes.date}>
-                {discount.discountType == "offOrder" ? "Off order" : "Shipping"}
+                {discount.discountType == "offOrder"
+                  ? "Off order"
+                  : discount.discountType == "xy"
+                  ? "XY"
+                  : "Shipping"}
               </p>
 
               <div className={classes.statusAmount}>
                 <p>
-                  {discount.value}
-                  {discount.valueType == "percentage" ? "% " : ".LE"}
+                  {discount.discountType == "xy" ? (
+                    "XY"
+                  ) : (
+                    <>
+                      {discount.value}
+                      {discount.valueType == "percentage" ? "% " : ".LE"}
+                    </>
+                  )}
                 </p>
 
                 <p className={classes.total}>{discount.used}</p>

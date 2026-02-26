@@ -1,0 +1,38 @@
+.skeleton {
+  position: relative;
+
+  height: 25px;
+  border-radius: 12px;
+
+  background: var(--skeletonBackground);
+  overflow: hidden;
+  margin: 16px;
+}
+.skeletonWhiteness {
+  position: absolute;
+  left: 0;
+
+  background: linear-gradient(
+    90deg,
+    var(--skeletonBackground) 0%,
+    var(--skeletonWhiteness) 38.38%,
+    var(--skeletonWhiteness) 68.7%,
+    var(--skeletonBackground) 100%
+  );
+  margin-left: -10%;
+  height: 100%;
+  width: 30%;
+  animation: skeleton-animation 1s infinite;
+}
+
+@keyframes skeleton-animation {
+  0% {
+    /* left: 0; */
+  }
+
+  50% {
+  }
+  100% {
+    left: 100%;
+  }
+}

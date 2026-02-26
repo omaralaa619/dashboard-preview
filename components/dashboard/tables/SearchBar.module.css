@@ -4,12 +4,9 @@
   overflow: hidden;
   fill: var(--black);
 
-  background: var(--background);
+  background: var(--muted);
   border: 2px solid var(--borders);
   border-radius: 6px;
-
-  box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.1),
-    0px 1px 3px 0px rgba(0, 0, 0, 0.1);
 }
 
 .searchButton {
@@ -20,14 +17,15 @@
   cursor: pointer;
   background: none;
   border: none;
-  border-left: 1px solid var(--borders);
+
+  fill: var(--secondaryText);
 }
 .searchButton:hover {
   background: var(--muted);
 }
 
 .input {
-  background: var(--background);
+  background: var(--muted);
   color: var(--black);
   padding: 0 8px;
   border: none;

@@ -12,15 +12,14 @@ const SearchBar = ({
 }) => {
   return (
     <div className={classes.search}>
+      <button className={classes.searchButton} onClick={searchHandler}>
+        <SearchSVG />
+      </button>
       <input
         type="text"
         onChange={(e) => setSearchValue(e.target.value)}
         className={classes.input}
       />
-
-      <button className={classes.searchButton} onClick={searchHandler}>
-        <SearchSVG />
-      </button>
     </div>
   );
 };

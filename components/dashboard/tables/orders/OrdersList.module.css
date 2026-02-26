@@ -54,12 +54,15 @@
 }
 
 .header {
-  background: var(--tableMuted);
   font-size: 14px;
-  font-weight: bold;
+  color: var(--secondaryText);
+  border-top: 1px solid var(--borders);
+}
+.header p {
+  color: var(--secondaryText);
 }
 .header:hover {
-  background: var(--tableMuted);
+  background: none;
 }
 
 .statusAmount {
@@ -83,6 +86,10 @@
 }
 .mobDate {
   display: none;
+  color: var(--secondaryText);
+}
+.date {
+  color: var(--secondaryText);
 }
 
 /* Create a custom checkbox */

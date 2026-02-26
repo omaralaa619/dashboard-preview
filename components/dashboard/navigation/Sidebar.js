@@ -3,23 +3,31 @@ import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { adminUiActions } from "@/store/admin-ui-store";
+import LocaleLogo from "@/svgs/LcaleLogo";
 import NavLink from "./Navlink";
 
 import HomeSVG from "@/svgs/HomeSVG";
 
 import classes from "./Sidebar.module.css";
-import OrdersSVG from "@/svgs/OrdersSVG";
-import AnalyticsSvg from "@/svgs/AnalyticsSVG";
-import ProductsSVG from "@/svgs/ProductsSVG";
-import SignoutSVG from "@/svgs/SignoutSVG";
-import StoreSVG from "@/svgs/StoreSVG";
+import {
+  Home,
+  ShoppingCart,
+  BarChart3,
+  Package,
+  Percent,
+  Store,
+  Mail,
+  LogOut,
+  Layers,
+} from "lucide-react";
+
 import Topnav from "./Topnav";
 import { useEffect } from "react";
-import DiscountSVG from "@/svgs/DiscountSVG";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const Sidebar = ({ children }) => {
+  const brand = process.env.NEXT_PUBLIC_BRAND_NAME;
   const router = useRouter();
   const dispatch = useDispatch();
   const navOpen = useSelector((state) => state.adminUi.navOpen);
@@ -29,6 +37,14 @@ const Sidebar = ({ children }) => {
     dispatch(adminUiActions.closeNav());
   };
 
+  // if (status == "authenticated") {
+  //   if (!session.user.admin) {
+  //     router.push("/");
+  //   }
+  // }
+  // if (status == "unauthenticated") {
+  //   router.push("/");
+  // }
   useEffect(() => {
     if (navOpen) {
       document.body.style.overflow = "hidden";
@@ -41,36 +57,46 @@ const Sidebar = ({ children }) => {
     {
       href: "/dashboard",
       label: "Home",
-      Icon: HomeSVG,
+      Icon: Home,
     },
     {
       href: "/dashboard/orders",
       label: "Orders",
-      Icon: OrdersSVG,
+      Icon: ShoppingCart,
     },
     {
       href: "/dashboard/analytics",
       label: "Analytics",
-      Icon: AnalyticsSvg,
+      Icon: BarChart3,
     },
     {
       href: "/dashboard/products",
       label: "Products",
-      Icon: ProductsSVG,
+      Icon: Package,
+    },
+    {
+      href: "/dashboard/collections",
+      label: "Collections",
+      Icon: Layers,
     },
     {
       href: "/dashboard/discounts",
       label: "Discounts",
-      Icon: DiscountSVG,
+      Icon: Percent,
     },
     {
       href: "/dashboard/store",
       label: "Store",
-      Icon: StoreSVG,
+      Icon: Store,
+    },
+    {
+      href: "/dashboard/newsletter",
+      label: "Newsletter",
+      Icon: Mail,
     },
   ];
   return (
-    <>
+    <div>
       <motion.div
         onClick={closeNavHandler}
         animate={navOpen ? { opacity: 0.5 } : { opacity: 0 }}
@@ -84,27 +110,31 @@ const Sidebar = ({ children }) => {
         className={classes.root}
       >
         <div className={classes.logo}>
-          <h1 className="text-2xl font-medium">DASHBOARD</h1>
+          <LocaleLogo className="w-6 h-6" />
+          <h1 className="text-xl tracking-[0.3em] uppercase">Local-e</h1>
         </div>
 
         <nav className={classes.navigation}>
-          {routes.map((link) => (
-            <div key={link.label} onClick={closeNavHandler}>
-              <NavLink href={link.href}>
-                <link.Icon /> {link.label}
-              </NavLink>
+          <div className="mt-4 mx-4 flex flex-col gap-2">
+            {routes.map((link) => (
+              <div key={link.label} onClick={closeNavHandler}>
+                <NavLink href={link.href}>
+                  <link.Icon /> {link.label}
+                </NavLink>
+              </div>
+            ))}
+          </div>
+          <div className="p-4 border-t border-zinc-800 mb-[70px]">
+            <div className={classes.logout} onClick={() => signOut()}>
+              <LogOut />
+              <p>Signout</p>
             </div>
-          ))}
-
-          <div className={classes.logout} onClick={() => signOut()}>
-            <SignoutSVG />
-            <p>Signout</p>
           </div>
         </nav>
       </motion.div>
       <Topnav />
       <div className={classes.children}>{children}</div>
-    </>
+    </div>
   );
 };
 

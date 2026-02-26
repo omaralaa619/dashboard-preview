@@ -3,13 +3,18 @@ import { useState } from "react";
 import LoadingSpinner from "../../UI/LoadingSpinner";
 import classes from "../categories/CategoryItem.module.css";
 import HeroForm from "./HeroForm";
+import { useDispatch } from "react-redux";
+import { toggleBanner } from "@/lib/banner";
 
-const HeroItem = ({ item, refetch, hero }) => {
+const HeroItem = ({ item, setStoreData, hero }) => {
+  const dispatch = useDispatch();
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
   const deleteHandler = async () => {
+    console.log("deleting..");
+
     if (hero.length > 1) {
       setDeleteLoading(true);
 
@@ -26,7 +31,8 @@ const HeroItem = ({ item, refetch, hero }) => {
 
         const data = await response.json();
 
-        refetch();
+        setStoreData(data);
+        toggleBanner(dispatch, "Store updated successfully", "ok");
       } catch (error) {
         console.log(error);
       }
@@ -40,8 +46,11 @@ const HeroItem = ({ item, refetch, hero }) => {
           <div>
             <p className="text-3xl">{item.header}</p>
             <p>{item.subheader}</p>
-
-            <img className="h-20 rounded-sm" src={item.imageUrl} alt="" />
+            {item.mediaType === "image" ? (
+              <img className="w-20 rounded-sm" src={item.imageUrl} alt="" />
+            ) : (
+              <video src={item.imageUrl} className="w-20 rounded-sm" controls />
+            )}
           </div>
 
           <div className="flex gap-4 ">
@@ -64,9 +73,7 @@ const HeroItem = ({ item, refetch, hero }) => {
                   }
                 />
               )}
-              {deleteLoading && (
-                <LoadingSpinner size={18} color={"var(--black)"} />
-              )}
+              {deleteLoading && <LoadingSpinner size={18} dark={true} />}
             </div>
           </div>
         </div>
@@ -76,7 +83,7 @@ const HeroItem = ({ item, refetch, hero }) => {
         <HeroForm
           item={item}
           type={"edit"}
-          refetch={refetch}
+          setStoreData={setStoreData}
           close={() => setIsEdit(false)}
         />
       )}

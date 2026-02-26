@@ -1,6 +1,9 @@
 .pageContainer {
   display: flex;
 }
+.logo svg {
+  height: 100%;
+}
 
 @media (max-width: 990px) {
   .pageContainer {

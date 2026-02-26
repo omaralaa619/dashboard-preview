@@ -3,12 +3,22 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   navOpen: false,
   cartOpen: false,
+  quickAdd: {
+    open: false,
+    content: [],
+  },
   store: {
     banner: {
       content: [""],
       show: false,
     },
   },
+  collections: [
+    {
+      title: "working??",
+      slug: "shop-all",
+    },
+  ],
 };
 
 const uiSlice = createSlice({
@@ -27,6 +37,9 @@ const uiSlice = createSlice({
     updateStore(state, action) {
       state.store = action.payload;
     },
+    updateCollections(state, action) {
+      state.collections = action.payload.collections;
+    },
     openCart(state, action) {
       state.cartOpen = true;
     },
@@ -35,6 +48,12 @@ const uiSlice = createSlice({
     },
     toggleCart(state, action) {
       state.cartOpen = !state.cartOpen;
+    },
+    toggleQuickAdd(state, action) {
+      state.quickAdd.open = !state.quickAdd.open;
+    },
+    updateQuickAdd(state, action) {
+      state.quickAdd.content = action.payload.content;
     },
   },
 });

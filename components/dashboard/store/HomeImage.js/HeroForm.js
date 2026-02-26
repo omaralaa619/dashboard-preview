@@ -7,7 +7,7 @@ import classes from "../categories/CategoriesList.module.css";
 import { toggleBanner } from "@/lib/banner";
 import { useDispatch } from "react-redux";
 
-const HeroForm = ({ close, refetch, item, type }) => {
+const HeroForm = ({ close, setStoreData, item, type }) => {
   const dispatch = useDispatch();
   const [files, setFiles] = useState([]);
 
@@ -16,11 +16,14 @@ const HeroForm = ({ close, refetch, item, type }) => {
 
   const [submitLoading, setSubmitLoading] = useState(false);
 
-  const { startUpload, permittedFileInfo } = useUploadThing("imageUploader", {
-    onUploadError: () => {
-      toggleBanner(dispatch, "Error occured please try again", "red");
-    },
-  });
+  const { startUpload, permittedFileInfo } = useUploadThing(
+    files[0]?.type?.startsWith("video") ? "videoUploader" : "imageUploader",
+    {
+      onUploadError: () => {
+        toggleBanner(dispatch, "Error occurred please try again", "red");
+      },
+    }
+  );
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -29,6 +32,12 @@ const HeroForm = ({ close, refetch, item, type }) => {
     switch (type) {
       case "add":
         try {
+          let mediaType = "image";
+          const file = files[0];
+          if (file?.type?.startsWith("video")) {
+            mediaType = "video";
+          }
+          console.log("Uploaded file URL:", mediaType);
           const uploadedImages = await startUpload(files);
 
           const imageUrl = uploadedImages[0].url;
@@ -42,14 +51,16 @@ const HeroForm = ({ close, refetch, item, type }) => {
               header,
               subheader,
               type: "hero",
+              mediaType,
             }),
             headers: {
               "content-Type": "application/json",
             },
           });
+          const data = await res.json();
+          setStoreData(data);
+          close();
           toggleBanner(dispatch, "Store updated successfully", "ok");
-
-          // refetch();
         } catch (e) {
           console.log(e);
           toggleBanner(dispatch, "Error please try again", "error");
@@ -60,12 +71,17 @@ const HeroForm = ({ close, refetch, item, type }) => {
       case "edit":
         try {
           let imageUrl;
+          let mediaType;
           if (typeof files[0] === "object") {
             const uploadedImages = await startUpload(files);
+            if (files[0]?.type?.startsWith("video")) {
+              mediaType = "video";
+            }
 
             imageUrl = uploadedImages[0].url;
           } else {
             imageUrl = item.imageUrl;
+            mediaType = item.mediaType;
           }
 
           const res = await fetch("/api/store", {
@@ -75,15 +91,17 @@ const HeroForm = ({ close, refetch, item, type }) => {
               header,
               subheader,
               type: "hero",
+              mediaType,
               id: item._id,
             }),
             headers: {
               "content-Type": "application/json",
             },
           });
+          const data = await res.json();
+          setStoreData(data);
+          close();
           toggleBanner(dispatch, "Store updated successfully", "ok");
-
-          refetch();
         } catch (e) {
           console.log(e);
           toggleBanner(dispatch, "Error please try again", "error");
@@ -98,6 +116,12 @@ const HeroForm = ({ close, refetch, item, type }) => {
 
   return (
     <form className={classes.form} onSubmit={submitHandler}>
+      <MediaInput
+        files={files}
+        setFiles={setFiles}
+        defaultImage={item?.imageUrl}
+        mediaType={item?.mediaType}
+      />
       <label>Header</label>
       <input
         type="text"
@@ -114,19 +138,8 @@ const HeroForm = ({ close, refetch, item, type }) => {
         className="mb-4"
       />
 
-      <MediaInput
-        files={files}
-        setFiles={setFiles}
-        defaultImage={item?.imageUrl}
-      />
       <button type="submit" className={classes.button}>
-        {submitLoading ? (
-          <LoadingSpinner size={16} />
-        ) : type === "add" ? (
-          "Add"
-        ) : (
-          "Edit"
-        )}
+        {submitLoading ? <LoadingSpinner size={16} /> : <p>Save</p>}
       </button>
 
       <button

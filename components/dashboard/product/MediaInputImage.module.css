@@ -3,19 +3,22 @@
 }
 .image {
   width: 100px;
+  border-radius: 4px;
 }
 .x {
-  width: 16px;
-  height: 16px;
-  fill: black;
-  background: rgb(246, 246, 246);
+  width: 24px;
+  height: 24px;
+  fill: var(--secondaryText);
+  background: var(--background);
   border-radius: 100%;
   border: none;
   position: absolute;
-  left: -8px;
+  right: -8px;
   top: -8px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid var(--borders);
+  padding: 4px;
 }

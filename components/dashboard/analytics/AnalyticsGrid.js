@@ -6,9 +6,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import AnalyticsCardLoading from "./loading/AnalyticsCardLoading";
 import AnalyticsLoading from "./loading/AnalyticsLoading";
-import DollarSVG from "@/svgs/DollarSVG";
-import ProductsSVG from "@/svgs/ProductsSVG";
-import AverageSVG from "@/svgs/AverageSVG";
+import { TrendingUp, DollarSign, Activity } from "lucide-react";
 
 const AnalyticsGrid = ({ duration }) => {
   let pathname = usePathname();
@@ -17,6 +15,7 @@ const AnalyticsGrid = ({ duration }) => {
   const [loading, setLoading] = useState(true);
 
   const fetchOrderDetails = async () => {
+    setLoading(true);
     try {
       const res = await fetch(`/api/orders/order-details/${duration}`);
       const data = await res.json();
@@ -57,7 +56,7 @@ const AnalyticsGrid = ({ duration }) => {
               dataa={ordersCountData}
               titlee={"Total Orders"}
               total={totalCount + " Orders"}
-              svg={<ProductsSVG />}
+              svg={<TrendingUp />}
               duration={duration}
             />
             <div
@@ -70,7 +69,7 @@ const AnalyticsGrid = ({ duration }) => {
                 dataa={ordersSalesData}
                 titlee={"Total Sales"}
                 total={totalSales}
-                svg={<DollarSVG />}
+                svg={<DollarSign />}
                 duration={duration}
               />
             </div>
@@ -85,7 +84,7 @@ const AnalyticsGrid = ({ duration }) => {
                 dataa={ordersAvgData}
                 titlee={"Total average"}
                 total={totalAvg || 0}
-                svg={<AverageSVG />}
+                svg={<Activity />}
                 duration={duration}
               />
             </div>

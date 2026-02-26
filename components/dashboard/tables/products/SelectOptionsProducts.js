@@ -160,7 +160,9 @@ const SelectOptionsProducts = ({ checkedProducts, fetchProducts, status }) => {
           title={"More Actions"}
           dropdownItems={[dropownItems[comboBoxFirstItem], dropownItems[2]]}
           gap={"8px"}
-          className={checkedProducts.length == 0 ? classes.pointerEvents : ""}
+          className={`${
+            checkedProducts.length == 0 ? classes.pointerEvents : ""
+          } ${classes.comboBox}`}
         />
       </div>
     </>

@@ -3,50 +3,85 @@ import Product from "@/models/productsModel";
 import connectDB from "@/lib/connectDB";
 
 import Store from "@/models/storeModel";
+import Collection from "@/models/collectionModel";
+import { unstable_cache } from "next/cache";
 
-export const getHome = cache(async () => {
-  connectDB();
-  const products = await Product.find({
-    status: "active",
-    featured: "true",
-  })
-    .sort({ _id: -1 })
-    .lean();
+export const getHome = unstable_cache(
+  async () => {
+    await connectDB();
 
-  const store = await Store.findOne({}).lean();
+    const collections = await Collection.find({})
+      .populate({
+        path: "products",
+        match: { status: "active" },
+      })
+      .sort({ order: 1 });
 
-  return { products, store };
-});
-export const getStore = cache(async () => {
-  connectDB();
-  const store = await Store.findOne({}).lean();
+    const store = await Store.findOne({}).lean();
 
-  return JSON.parse(JSON.stringify(store));
-});
-export const getProducts = cache(async () => {
-  connectDB();
-  const products = await Product.find({
-    status: "active",
-    featured: "true",
-  })
-    .sort({ _id: -1 })
-    .lean();
+    return {
+      collections: JSON.parse(JSON.stringify(collections)),
+      store: JSON.parse(JSON.stringify(store)),
+    };
+  },
+  ["home-data"],
+  {
+    tags: ["home"],
+  },
+);
 
-  return products;
-});
-export const getProduct = cache(async (slug) => {
-  connectDB();
-  const product = await Product.findOne({ slug }).lean();
-  console.log(product);
+export const getProducts = unstable_cache(
+  async () => {
+    await connectDB();
 
-  return JSON.parse(JSON.stringify(product));
-});
+    const products = await Product.find({
+      status: "active",
+    })
+      .sort({ date: -1 })
+      .lean();
 
-export const getProductCatg = cache(async (slug) => {
-  connectDB();
-  const store = await Store.findOne({}).lean();
-  const category = store.categories.find((cat) => cat.slug === slug);
-  const products = await Product.find({ category: category.title }).lean();
+    return JSON.parse(JSON.stringify(products));
+  },
+  ["all-products"],
+  {
+    tags: ["products"],
+  },
+);
 
-  return { products, category };
-});
+export const getProduct = (slug) =>
+  unstable_cache(
+    async () => {
+      await connectDB();
+
+      const decodedSlug = decodeURIComponent(slug);
+
+      const product = await Product.findOne({
+        slug: decodedSlug,
+      })
+        .lean()
+        .exec();
+
+      if (!product) return null;
+
+      return JSON.parse(JSON.stringify(product));
+    },
+    [`product-${slug}`], // ✅ UNIQUE CACHE KEY
+    {
+      tags: [`product-${slug}`], // ✅ granular tags
+    },
+  )();
+
+export const getProductsCollection = unstable_cache(
+  async (slug) => {
+    await connectDB();
+    const collection = await Collection.findOne({ slug })
+      .populate({ path: "products", match: { status: "active" } })
+      .lean();
+
+    return { collection: JSON.parse(JSON.stringify(collection)) };
+  },
+  ["collection-data"],
+  {
+    tags: ["collections"],
+  },
+);

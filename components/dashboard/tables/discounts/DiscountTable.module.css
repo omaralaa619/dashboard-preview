@@ -7,7 +7,7 @@
   justify-content: space-between;
 
   border-bottom: 1px solid var(--borders);
-  padding: 8px 16px;
+  padding: 24px 24px;
 }
 .top button {
   cursor: pointer;

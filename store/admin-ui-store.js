@@ -9,6 +9,7 @@ const initialState = {
     status: "",
   },
   discountModal: false,
+  newsletterModal: false,
 };
 
 const adminUiSlice = createSlice({
@@ -33,6 +34,9 @@ const adminUiSlice = createSlice({
       state.banner.open = false;
     },
     toggleDiscountModal(state, action) {
+      state.discountModal = !state.discountModal;
+    },
+    toggleNewsletterModal(state, action) {
       state.discountModal = !state.discountModal;
     },
   },

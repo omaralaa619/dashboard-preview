@@ -13,7 +13,7 @@ import CategoriesForm from "./CategoriesForm";
 const CategoriesList = ({ categories, loading, refetch }) => {
   const [showForm, setSHowForm] = useState(false);
 
-  console.log(categories);
+  // console.log(categories);
 
   return (
     <div className={classes.main}>

@@ -4,10 +4,10 @@
 }
 
 .mediaLabel {
-  padding: 4px 8px;
-  color: var(--secondaryText);
+  padding: 8px 8px;
+  color: var(--background);
   cursor: pointer;
-  border-radius: 12px;
+  border-radius: 8px;
   border: 1px solid var(--borders);
 
   background: #fff;

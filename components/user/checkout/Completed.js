@@ -3,8 +3,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import classes from "./Completed.module.css";
 import ThawbSVG from "@/svgs/ThawbSVG";
-import CompletedSVG from "@/svgs/CompletedSvg";
-import LynneSVG from "@/svgs/LynneSVG";
+import CompleteSVG from "@/svgs/CompleteSVG";
 
 const Completed = () => {
   const router = useRouter();
@@ -24,9 +23,9 @@ const Completed = () => {
   };
   return (
     <div className={classes.root}>
-      <LynneSVG />
+      <ThawbSVG />
       <div className={classes.topText}>
-        <CompletedSVG />
+        <CompleteSVG />
 
         <div>
           <p className={classes.subtitle}>Order Confirmed</p>

@@ -5,9 +5,10 @@ import Link from "next/link";
 
 const MobileShop = ({ open, setOpen, closeHandler }) => {
   const categories = useSelector((state) => state.ui.store.categories);
+  console.log(categories);
 
   return (
-    <div className="py-4 border-b pl-2 border-white/50">
+    <div className="py-4 border-b border-white/25">
       <div
         onClick={() => setOpen(!open)}
         className=" flex fill-white gap-4 items-center"
@@ -36,13 +37,13 @@ const MobileShop = ({ open, setOpen, closeHandler }) => {
           }}
         >
           {categories.map((item) => (
-            <Link href={`/category/${item.slug}`} key={item.title}>
-              <p
-                className="py-4 border-t border-white/25 text-white"
-                onClick={closeHandler}
-              >
-                {item.title}
-              </p>
+            <Link
+              href={`/category/${item.slug}`}
+              className="text-white"
+              key={item.title}
+              onClick={closeHandler}
+            >
+              <p className="py-4 border-t border-white/25">{item.title}</p>
             </Link>
           ))}
         </motion.div>

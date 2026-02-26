@@ -4,8 +4,10 @@ import classes from "./BannerItem.module.css";
 import { Pencil, Trash2 } from "lucide-react";
 import LoadingSpinner from "../../UI/LoadingSpinner";
 import { useDispatch } from "react-redux";
+import { toggleBanner } from "@/lib/banner";
+import { set } from "mongoose";
 
-const BannerItem = ({ item, banner, refetch }) => {
+const BannerItem = ({ item, banner, setStoreData }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [content, setContent] = useState(item);
@@ -28,11 +30,15 @@ const BannerItem = ({ item, banner, refetch }) => {
           "content-Type": "application/json",
         },
       });
-      toggleBanner(dispatch, "Store updated successfully", "ok");
-      refetch();
-      setLoading(false);
 
-      refetch();
+      const data = await res.json();
+
+      toggleBanner(dispatch, "Store updated successfully", "ok");
+
+      setStoreData(data);
+
+      setLoading(false);
+      setIsEdit(false);
     } catch (error) {
       toggleBanner(dispatch, "Error please try again", "error");
       setLoading(false);
@@ -53,8 +59,11 @@ const BannerItem = ({ item, banner, refetch }) => {
         });
 
         const data = await response.json();
+        setStoreData(data);
 
-        refetch();
+        // Update parent state to remove item without refetching
+        toggleBanner(dispatch, "Store updated successfully", "ok");
+        if (removeBannerItem) removeBannerItem(item);
       } catch (error) {
         console.log(error);
       }
@@ -107,11 +116,12 @@ const BannerItem = ({ item, banner, refetch }) => {
                     : "var(--secondaryText)"
                 }
                 onClick={deleteHandler}
+                className={`${
+                  banner.content.length > 1 ? "cursor-pointer" : ""
+                }`}
               />
             )}
-            {deleteLoading && (
-              <LoadingSpinner size={18} color={"var(--black)"} />
-            )}
+            {deleteLoading && <LoadingSpinner size={18} dark={true} />}
           </div>
         )}
       </div>

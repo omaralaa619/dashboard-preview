@@ -12,7 +12,13 @@ import classes from "./MediaInput.module.css";
 
 import MediaInputImage from "./MediaInputImage";
 
-const MediaInput = ({ files, setFiles, permittedFileInfo, defaultImage }) => {
+const MediaInput = ({
+  files,
+  setFiles,
+  permittedFileInfo,
+  defaultImage,
+  mediaType,
+}) => {
   ///////  uploadthing tingzz //////
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -46,17 +52,34 @@ const MediaInput = ({ files, setFiles, permittedFileInfo, defaultImage }) => {
 
   return (
     <div className={classes.container}>
-      {files.length == 0 && (
-        <img src={defaultImage} className="w-[200px]" alt="" />
-      )}
-      {files.map((file) => (
-        <MediaInputImage
-          key={imageSrcHandler(file).key}
-          imageSrcHandler={imageSrcHandler}
-          setFiles={setFiles}
-          file={file}
-        />
-      ))}
+      {files.length === 0 &&
+        defaultImage &&
+        (mediaType == "video" ? (
+          <video src={defaultImage} className="w-[200px]" controls />
+        ) : (
+          <img src={defaultImage} className="w-[200px]" alt="" />
+        ))}
+
+      {files.map((file) => {
+        const { src, key } = imageSrcHandler(file);
+
+        return file.type?.startsWith("video") ? (
+          <>
+            <video key={key} src={src} className="w-[200px]" controls />
+            ff
+          </>
+        ) : (
+          <>
+            <MediaInputImage
+              key={key}
+              imageSrcHandler={imageSrcHandler}
+              setFiles={setFiles}
+              file={file}
+            />
+            ff
+          </>
+        );
+      })}
 
       <div {...getRootProps()}>
         <input onChange={() => console.log("files")} {...getInputProps()} />

@@ -9,6 +9,7 @@
   border: 1px solid var(--borders);
   padding: 8px;
   color: var(--black);
+  width: 100%;
 }
 .button {
   background: var(--black);

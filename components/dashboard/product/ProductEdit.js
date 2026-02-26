@@ -11,6 +11,7 @@ const ProductEdit = ({ productId }) => {
   const [loading, setLoading] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [product, setProduct] = useState({});
+  const [collections, setCollections] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -55,7 +56,10 @@ const ProductEdit = ({ productId }) => {
       console.log(error);
       toggleBanner(dispatch, "Error occured please try again", "red");
     }
+    console.log(data);
+
     setSubmitLoading(false);
+    console.log(data);
   };
 
   const fetchProduct = async () => {
@@ -71,6 +75,15 @@ const ProductEdit = ({ productId }) => {
         setFiles(data.imageUrls);
         console.log(data);
       }
+
+      const collectionsRes = await fetch("/api/collections", {
+        method: "GET",
+      });
+
+      const collectionsData = await collectionsRes.json();
+
+      setCollections(collectionsData.collections);
+      console.log("product edit fetchcollections", collections);
     } catch (error) {
       console.log(error);
     } finally {
@@ -94,6 +107,7 @@ const ProductEdit = ({ productId }) => {
           productId={productId}
           loading={loading}
           submitLoading={submitLoading}
+          collections={collections}
         />
       )}
 

@@ -1,0 +1,29 @@
+.productItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border: 1px solid var(--borders);
+  border-radius: 4px;
+}
+.imgContainer {
+  width: 40px;
+  height: 40px;
+
+  border: 1.5px solid rgba(206, 206, 206, 0.688);
+  background: #ededed;
+  border-radius: 4px;
+  position: relative;
+}
+.imgContainer img {
+  width: 100%; /* or any custom size */
+  height: 100%;
+  object-fit: contain;
+}
+.price {
+  color: var(--secondaryText);
+}
+.x {
+  color: var(--secondaryText);
+  cursor: pointer;
+}

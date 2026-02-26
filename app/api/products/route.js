@@ -1,6 +1,8 @@
 import connectDB from "@/lib/connectDB";
+import Collection from "@/models/collectionModel";
 import Product from "@/models/productsModel";
-import { ObjectId } from "mongoose";
+import { revalidateTag } from "next/cache";
+
 import { NextResponse } from "next/server";
 
 export const GET = async (req) => {
@@ -13,16 +15,17 @@ export const GET = async (req) => {
     connectDB();
 
     const documentCount = await Product.countDocuments({
-      title: { $regex: search },
+      title: { $regex: search, $options: "i" },
       status: status,
     });
 
     console.log("document count products", documentCount);
 
     const products = await Product.find({
-      title: { $regex: search },
+      title: { $regex: search, $options: "i" },
       status: status,
     })
+      .sort({ date: -1 })
       .limit(ITEMS_PERPAGE)
       .skip((page - 1) * ITEMS_PERPAGE);
 
@@ -39,11 +42,10 @@ export const POST = async (req) => {
   connectDB();
 
   const body = await req.json();
-  console.log("body", body);
 
   const slug = body.title
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/[^\u0600-\u06FFa-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
   console.log(slug);
@@ -52,6 +54,19 @@ export const POST = async (req) => {
     const product = new Product({ ...body, slug });
 
     const createdProduct = await product.save();
+
+    const collectionIds = body.collections || [];
+    if (collectionIds.length > 0) {
+      // Add the created product to the selected collections' `products` arrays
+      await Collection.updateMany(
+        { _id: { $in: collectionIds } },
+        { $addToSet: { products: createdProduct._id } },
+      );
+    }
+
+    revalidateTag("home");
+    revalidateTag("collections");
+
     return NextResponse.json({
       message: "Product Added Successfully",
       product,
@@ -77,9 +92,12 @@ export const PUT = async (req) => {
         $set: {
           status: toStatus,
         },
-      }
+      },
     );
 
+    revalidateTag("home");
+    revalidateTag("collections");
+    // revalidateTag(`product-${slug}`);
     return NextResponse.json(res);
   } catch (error) {
     console.log("error", error);
@@ -94,6 +112,8 @@ export const DELETE = async (req) => {
 
     const result = await Product.deleteMany({ _id: { $in: body } });
 
+    revalidateTag("home");
+    revalidateTag("collections");
     return NextResponse.json({ message: result });
   } catch (error) {
     console.log(error);

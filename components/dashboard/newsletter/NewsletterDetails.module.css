@@ -1,0 +1,84 @@
+.container {
+  border: dashed 1px rgb(145, 145, 145);
+  width: 90%;
+  margin: auto;
+  padding: 16px;
+  font-family: sans-serif;
+  text-align: center;
+}
+.logo {
+  width: 50px;
+}
+.header {
+  font-size: 32px;
+}
+.date {
+  color: #71717a;
+  margin-top: 8px;
+}
+.newsletterBody {
+  text-align: left;
+  margin-top: 24px;
+  font-family: inherit;
+}
+.newsletterBody h1,
+.newsletterBody h2,
+.newsletterBody h3,
+.newsletterBody h4,
+.newsletterBody h5,
+.newsletterBody h6 {
+  font-weight: bold;
+  margin: 1em 0 0.5em 0;
+}
+.newsletterBody p {
+  margin: 0.5em 0;
+  font-size: 1em;
+}
+.newsletterBody ul,
+.newsletterBody ol {
+  margin: 1em 0 1em 2em;
+}
+.newsletterBody li {
+  margin: 0.3em 0;
+}
+.newsletterBody img {
+  max-width: 100%;
+  height: auto;
+  margin: 1em 0;
+  display: block;
+}
+.newsletterBody a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+.newsletterBody blockquote {
+  border-left: 4px solid #ddd;
+  margin: 1em 0;
+  padding-left: 1em;
+  color: #555;
+  font-style: italic;
+}
+.newsletterBody pre {
+  background: #f4f4f4;
+  padding: 1em;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-family: monospace;
+}
+.newsletterBody code {
+  background: #f4f4f4;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+.newsletterBody table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+.newsletterBody th,
+.newsletterBody td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}

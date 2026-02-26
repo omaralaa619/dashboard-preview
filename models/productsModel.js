@@ -29,32 +29,46 @@ const productsSchema = new Schema({
     type: String,
     default: "active",
   },
-  category: {
-    type: String,
-    required: true,
-  },
-  featured: {
-    type: Boolean,
-    required: true,
-  },
+
+  // featured: {
+  //   type: Boolean,
+  //   required: true,
+  // },
   sold: {
     required: true,
     type: Number,
     default: 0,
   },
+  sizes: [String],
 
-  stock: [
+  colors: [
     {
-      optionName: {
-        type: String,
-      },
-      available: {
-        type: Number,
-      },
+      name: { type: String },
+      color: { type: String, default: "#000000" },
     },
   ],
+
+  variants: [
+    {
+      size: { type: String },
+      colorName: { type: String },
+      colorHex: { type: String },
+      stock: { type: Number },
+    },
+  ],
+  date: { type: Date, default: Date.now },
 });
 
+// Virtual populate: allow `Product.findById(id).populate('collections')`
+productsSchema.virtual("collections", {
+  ref: "Collection",
+  localField: "_id",
+  foreignField: "products",
+});
+
+// Ensure virtual fields are included when converting documents to JSON/Object
+productsSchema.set("toObject", { virtuals: true });
+productsSchema.set("toJSON", { virtuals: true });
 const Product = models.Product || model("Product", productsSchema);
 
 export default Product;

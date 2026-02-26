@@ -1,4 +1,26 @@
+.comboBox {
+  transition: all 0.2s ease;
+}
+.comboBox > :first-child {
+  background: none;
+  border: none;
+  fill: var(--secondaryText);
+  color: var(--secondaryText);
+}
+.comboBox > :first-child {
+  background: none;
+  border: none;
+  fill: var(--secondaryText);
+  color: var(--secondaryText);
+}
+.comboBox > :first-child p {
+  color: var(--secondaryText);
+}
+.comboBox > :first-child:hover {
+  background: var(--muted);
+}
 .pointerEvents {
+  opacity: 0;
   pointer-events: none;
 }
 .deleteButton {

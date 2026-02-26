@@ -15,14 +15,6 @@ const AnalyticsLoading = () => {
       <div className={`${pathname != "/dashboard" ? "" : classes.noneMobile}`}>
         <AnalyticsCardLoading />
       </div>
-
-      {pathname != "/dashboard" && (
-        <>
-          <AnalyticsCardLoading />
-          <AnalyticsCardLoading />
-          <AnalyticsCardLoading />
-        </>
-      )}
     </div>
   );
 };

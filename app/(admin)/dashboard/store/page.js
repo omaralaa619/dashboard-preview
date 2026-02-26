@@ -10,8 +10,8 @@ const page = () => {
       label: "Dashboard",
     },
     {
-      href: "/orders",
-      label: "Orders",
+      href: "/stor",
+      label: "Store",
       last: true,
     },
   ];

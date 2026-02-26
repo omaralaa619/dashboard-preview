@@ -1,0 +1,56 @@
+.accordion {
+  border-top: 1px solid #dedede;
+  margin-top: 1rem;
+}
+
+.item {
+  border-bottom: 1px solid #dedede;
+}
+
+.itemBtn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 1.2rem 1rem;
+  font-size: 1rem;
+  text-align: left;
+
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
+}
+
+.itemContent {
+  transition: height 0.25s cubic-bezier(0, 0, 0, 1);
+}
+
+.itemPanel {
+  padding: 1rem;
+}
+
+.chevContainer {
+  margin-left: auto;
+  background: #e8e8e8;
+  border-radius: 100%;
+  padding: 8px;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+.chev {
+  transition: transform 0.25s cubic-bezier(0, 0, 0, 1);
+}
+
+.itemBtnExpanded .chev {
+  transform: rotate(180deg);
+}
+.itemBtn:hover .chevContainer {
+  background-color: #000;
+  color: white;
+}
+.itemBtnExpanded .chevContainer {
+  background-color: #000;
+  color: white;
+}

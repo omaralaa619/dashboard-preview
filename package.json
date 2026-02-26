@@ -30,6 +30,7 @@
     "react-hook-form": "^7.53.0",
     "react-quill": "^2.0.0",
     "react-redux": "^9.1.2",
+    "recharts": "^3.7.0",
     "uploadthing": "^7.1.0"
   },
   "devDependencies": {

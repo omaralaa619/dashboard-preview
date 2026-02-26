@@ -6,7 +6,7 @@ const ProductTableLoading = () => {
     <>
       <div className={classes.sMain}>
         <div className={classes.imgSkeleton}>
-          <Skeleton rows={1} height={80} />
+          <Skeleton rows={1} height={100} width={80} />
         </div>
 
         <div className={classes.textSkeleton}>
@@ -15,7 +15,7 @@ const ProductTableLoading = () => {
       </div>
       <div className={classes.sMain}>
         <div className={classes.imgSkeleton}>
-          <Skeleton rows={1} height={80} />
+          <Skeleton rows={1} height={100} width={80} />
         </div>
 
         <div className={classes.textSkeleton}>
@@ -24,7 +24,7 @@ const ProductTableLoading = () => {
       </div>
       <div className={classes.sMain}>
         <div className={classes.imgSkeleton}>
-          <Skeleton rows={1} height={80} />
+          <Skeleton rows={1} height={100} width={80} />
         </div>
 
         <div className={classes.textSkeleton}>
@@ -33,7 +33,34 @@ const ProductTableLoading = () => {
       </div>
       <div className={classes.sMain}>
         <div className={classes.imgSkeleton}>
-          <Skeleton rows={1} height={80} />
+          <Skeleton rows={1} height={100} width={80} />
+        </div>
+
+        <div className={classes.textSkeleton}>
+          <Skeleton rows={1} />
+        </div>
+      </div>
+      <div className={classes.sMain}>
+        <div className={classes.imgSkeleton}>
+          <Skeleton rows={1} height={100} width={80} />
+        </div>
+
+        <div className={classes.textSkeleton}>
+          <Skeleton rows={1} />
+        </div>
+      </div>
+      <div className={classes.sMain}>
+        <div className={classes.imgSkeleton}>
+          <Skeleton rows={1} height={100} width={80} />
+        </div>
+
+        <div className={classes.textSkeleton}>
+          <Skeleton rows={1} />
+        </div>
+      </div>
+      <div className={classes.sMain}>
+        <div className={classes.imgSkeleton}>
+          <Skeleton rows={1} height={100} width={80} />
         </div>
 
         <div className={classes.textSkeleton}>

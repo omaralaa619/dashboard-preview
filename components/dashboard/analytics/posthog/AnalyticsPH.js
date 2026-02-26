@@ -13,103 +13,34 @@ import ItemsModal from "./ItemsModal";
 import { AnimatePresence } from "framer-motion";
 
 const AnalyticsPH = ({ duration }) => {
-  const fromDate = new Date();
-  fromDate.setDate(fromDate.getDate() - duration);
-
-  const posthogAPI = process.env.POSTHOG_API_KEY;
-
   const [analytics, setAnalytics] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [modalContent, setModalContent] = useState([]);
-
-  const modalHandler = (content) => {
-    setModal(true);
-
-    setModalContent(content);
-  };
-
+  const [loading, setLoading] = useState(true);
   const fetchPH = async () => {
+    setLoading(true);
     try {
-      const response = await fetch(
-        `https://app.posthog.com/api/projects/53836/events?event=$pageview&after=${fromDate.toISOString()}&limit=10000000`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${posthogAPI}`,
-          },
-        }
-      );
-      const data = await response.json();
-      console.log("asas", data.results);
+      const res = await fetch(`/api/analytics?duration=${duration}`);
+      const data = await res.json();
 
-      setAnalytics(data.results);
+      setAnalytics(data);
+      console.log(data);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching analytics data:", error);
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
     fetchPH();
   }, [duration]);
 
-  const groupByUrl = groupFunction(analytics, "$pathname");
+  const modalHandler = (content) => {
+    setModal(true);
 
-  const groupByOs = groupFunction(analytics, "$os");
-  const groupByBrowser = groupFunction(analytics, "$browser");
-  const groupByReferring = groupFunction(analytics, "$referring_domain");
-  const groupByCountry = groupFunction(analytics, "$geoip_country_name");
-
-  const formatDate = (date) => {
-    const dateOptions = { month: "short", day: "numeric" };
-    return date.toLocaleDateString("en-US", dateOptions);
+    setModalContent(content);
   };
-
-  // Helper function to get a list of all dates for a given number of days before today
-  const getDateRangeFromDaysAgo = (daysAgo) => {
-    const dateArray = [];
-    const endDate = new Date(); // Today's date
-    const startDate = new Date();
-    startDate.setDate(endDate.getDate() - daysAgo); // Subtract days from today
-
-    let currentDate = startDate;
-
-    while (currentDate <= endDate) {
-      dateArray.push(new Date(currentDate)); // Clone the date object
-      currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
-    }
-
-    return dateArray;
-  };
-
-  const groupByDayWithZeroes = (analytics, daysAgo) => {
-    // Step 1: Extract all dates in YYYY-MM-DD format from the page views
-    const dates = analytics.map((view) => formatDate(new Date(view.timestamp)));
-
-    // Step 2: Get all dates between 'daysAgo' and today
-    const allDates = getDateRangeFromDaysAgo(daysAgo);
-
-    // Step 3: Create an object with each date initialized to 0
-    const dailyPageViews = allDates.reduce((acc, date) => {
-      const formattedDate = formatDate(date);
-      acc[formattedDate] = 0;
-      return acc;
-    }, {});
-
-    // Step 4: Populate the object with actual page view counts
-    dates.forEach((date) => {
-      if (dailyPageViews[date] !== undefined) {
-        dailyPageViews[date]++;
-      }
-    });
-
-    return dailyPageViews;
-  };
-
-  // Usage example: Group page views for the last 7 days including today
-
-  const dailyPageViewsWithZeroes = groupByDayWithZeroes(analytics, duration);
 
   return (
     <div className={classes.root}>
@@ -127,12 +58,12 @@ const AnalyticsPH = ({ duration }) => {
                 <div className={classes.firstInner}>
                   <p className={classes.firstHeaderTitle}>Page Views</p>
                   <p className={classes.firstHeaderNumber}>
-                    {analytics.length}
+                    {analytics.totalViews}
                   </p>
                 </div>
               </div>
               <div className={classes.chart}>
-                <PageviewsChart items={dailyPageViewsWithZeroes} />
+                <PageviewsChart items={analytics.dailyCounts} />
               </div>
             </Card>
           </div>
@@ -141,10 +72,10 @@ const AnalyticsPH = ({ duration }) => {
             <Card className={classes.block}>
               <div
                 className={`${classes.expand} ${
-                  groupByUrl.length > 6 ? classes.show : classes.none
+                  analytics.urls.length > 5 ? classes.show : classes.none
                 }`}
               >
-                <button onClick={() => modalHandler(groupByUrl)}>
+                <button onClick={() => modalHandler(analytics.urls)}>
                   View All <ExpandSVG />
                 </button>
               </div>
@@ -153,11 +84,11 @@ const AnalyticsPH = ({ duration }) => {
                 <p className={classes.sub}>VISITORS</p>
               </div>
               <div className={classes.list}>
-                {groupByUrl.map((item) => (
+                {analytics.urls.map((item) => (
                   <ListItem
                     key={item.group}
                     item={item}
-                    max={groupByUrl[0].count}
+                    max={analytics.urls[0].col1}
                   />
                 ))}
               </div>
@@ -166,10 +97,14 @@ const AnalyticsPH = ({ duration }) => {
             <Card className={classes.block}>
               <div
                 className={`${classes.expand} ${
-                  groupByReferring.length > 6 ? classes.show : classes.none
+                  analytics.referringDomains.length > 5
+                    ? classes.show
+                    : classes.none
                 }`}
               >
-                <button onClick={() => modalHandler(groupByReferring)}>
+                <button
+                  onClick={() => modalHandler(analytics.referringDomains)}
+                >
                   View All <ExpandSVG />
                 </button>
               </div>
@@ -178,11 +113,11 @@ const AnalyticsPH = ({ duration }) => {
                 <p className={classes.sub}>VISITORS</p>
               </div>
               <div className={classes.list}>
-                {groupByReferring.map((item) => (
+                {analytics.referringDomains.map((item) => (
                   <ListItem
                     key={item.group}
                     item={item}
-                    max={groupByReferring[0].count}
+                    max={analytics.referringDomains[0].col1}
                   />
                 ))}
               </div>
@@ -193,10 +128,10 @@ const AnalyticsPH = ({ duration }) => {
             <Card className={classes.block}>
               <div
                 className={`${classes.expand} ${
-                  groupByCountry.length > 6 ? classes.show : classes.none
+                  analytics.countries.length > 5 ? classes.show : classes.none
                 }`}
               >
-                <button onClick={() => modalHandler(groupByCountry)}>
+                <button onClick={() => modalHandler(analytics.countries)}>
                   View All <ExpandSVG />
                 </button>
               </div>
@@ -205,11 +140,11 @@ const AnalyticsPH = ({ duration }) => {
                 <p className={classes.sub}>VISITORS</p>
               </div>
               <div className={classes.list}>
-                {groupByCountry.map((item) => (
+                {analytics.countries.map((item) => (
                   <ListItem
                     key={item.group}
                     item={item}
-                    max={groupByCountry[0].count}
+                    max={analytics.countries[0].col1}
                   />
                 ))}
               </div>
@@ -218,10 +153,10 @@ const AnalyticsPH = ({ duration }) => {
             <Card className={classes.block}>
               <div
                 className={`${classes.expand} ${
-                  groupByOs.length > 6 ? classes.show : classes.none
+                  analytics.osList.length > 5 ? classes.show : classes.none
                 }`}
               >
-                <button onClick={() => modalHandler(groupByOs)}>
+                <button onClick={() => modalHandler(analytics.osList)}>
                   View All <ExpandSVG />
                 </button>
               </div>
@@ -230,11 +165,11 @@ const AnalyticsPH = ({ duration }) => {
                 <p className={classes.sub}>VISITORS</p>
               </div>
               <div className={classes.list}>
-                {groupByOs.map((item) => (
+                {analytics.osList.map((item) => (
                   <ListItem
                     key={item.group}
                     item={item}
-                    max={groupByOs[0].count}
+                    max={analytics.osList[0].col1}
                   />
                 ))}
               </div>
@@ -243,10 +178,10 @@ const AnalyticsPH = ({ duration }) => {
             <Card className={classes.block}>
               <div
                 className={`${classes.expand} ${
-                  groupByBrowser.length > 6 ? classes.show : classes.none
+                  analytics.browsers.length > 5 ? classes.show : classes.none
                 }`}
               >
-                <button onClick={() => modalHandler(groupByBrowser)}>
+                <button onClick={() => modalHandler(analytics.browsers)}>
                   View All <ExpandSVG />
                 </button>
               </div>
@@ -255,11 +190,11 @@ const AnalyticsPH = ({ duration }) => {
                 <p className={classes.sub}>VISITORS</p>
               </div>
               <div className={classes.list}>
-                {groupByBrowser.map((item) => (
+                {analytics.browsers.map((item, index) => (
                   <ListItem
-                    key={item.group}
+                    key={index}
                     item={item}
-                    max={groupByBrowser[0].count}
+                    max={analytics.browsers[0].col1}
                   />
                 ))}
               </div>

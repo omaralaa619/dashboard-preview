@@ -4,7 +4,7 @@ const ProductNew = dynamic(
   () => import("@/components/dashboard/product/ProductNew"),
   {
     ssr: false,
-  }
+  },
 );
 
 const page = () => {

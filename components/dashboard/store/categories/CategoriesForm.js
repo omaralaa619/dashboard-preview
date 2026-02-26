@@ -72,6 +72,7 @@ const CategoriesForm = ({ close, refetch, item, type }) => {
               title: newCat,
               type: "category",
               id: item._id,
+              date: item.date,
             }),
             headers: {
               "content-Type": "application/json",
@@ -101,6 +102,7 @@ const CategoriesForm = ({ close, refetch, item, type }) => {
         required={true}
         onChange={(e) => setNewCat(e.target.value)}
         className="mb-4"
+        disabled={item?.slug === "featured" || item?.slug === "new-arrivals"}
       />
 
       <MediaInput
@@ -108,7 +110,7 @@ const CategoriesForm = ({ close, refetch, item, type }) => {
         setFiles={setFiles}
         defaultImage={item?.imageUrl}
       />
-      <button type="submit" className={classes.button}>
+      <button type="submit" className={classes.button} disabled={submitLoading}>
         {submitLoading ? (
           <LoadingSpinner size={16} />
         ) : type === "add" ? (

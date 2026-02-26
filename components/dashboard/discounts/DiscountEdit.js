@@ -2,11 +2,19 @@
 import React, { useEffect, useState } from "react";
 import DiscountsForm from "./DiscountsForm";
 import { useSearchParams } from "next/navigation";
+import { toggleBanner } from "@/lib/banner";
+import { useDispatch } from "react-redux";
 
 const DiscountEdit = ({ discountId }) => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [discount, setDiscount] = useState([]);
   const [loading, setLoaidng] = useState(true);
+  const dispatch = useDispatch();
+
+  const [productsX, setProductsX] = useState([]);
+  const [productsY, setProductsY] = useState([]);
+  const [productsYquantity, setProductsYquantity] = useState(1);
+  const [productsXquantity, setProductsXquantity] = useState(1);
 
   const searchParams = useSearchParams();
   const discountType = searchParams.get("type");
@@ -39,9 +47,20 @@ const DiscountEdit = ({ discountId }) => {
           startDateTime,
           endDateTime,
           value: value,
+          productsX: {
+            products: productsX,
+            quantity: productsXquantity,
+          },
+          productsY: {
+            products: productsY,
+            quantity: productsYquantity,
+          },
         }),
       });
       const response = await res.json();
+
+      fetchDiscount();
+      toggleBanner(dispatch, "Discount updated successfully ", "red");
     } catch (e) {
       console.log(e);
     } finally {
@@ -83,6 +102,12 @@ const DiscountEdit = ({ discountId }) => {
         endDate: endDateValue,
         endTime: endTimeValue,
       });
+
+      setProductsX(data.productsX.products || []);
+      setProductsY(data.productsY.products || []);
+      setProductsXquantity(data.productsX.quantity || 1);
+      setProductsYquantity(data.productsY.quantity || 1);
+
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -97,7 +122,18 @@ const DiscountEdit = ({ discountId }) => {
   return (
     <div>
       {!loading && (
-        <DiscountsForm defaultValues={discount} submitHandler={submitHandler} />
+        <DiscountsForm
+          defaultValues={discount}
+          submitHandler={submitHandler}
+          productsX={productsX}
+          productsY={productsY}
+          setProductsX={setProductsX}
+          setProductsY={setProductsY}
+          setProductsXquantity={setProductsXquantity}
+          setProductsYquantity={setProductsYquantity}
+          productsXquantity={productsXquantity}
+          productsYquantity={productsYquantity}
+        />
       )}
     </div>
   );

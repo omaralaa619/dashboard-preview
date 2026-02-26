@@ -6,11 +6,15 @@ import ProductForm from "./ProductForm";
 import { toggleBanner } from "@/lib/banner";
 import { useDispatch } from "react-redux";
 import { useUploadThing } from "@/utils/uploadthing";
+import EditSkeleton from "./EditSkeleton";
 
 const ProductNew = () => {
   const router = useRouter();
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [collections, setCollections] = useState([]);
+
   const [product, setProduct] = useState({});
   const [stockOptions, setStockOptions] = useState([
     { option: "Small", stock: 5 },
@@ -55,19 +59,46 @@ const ProductNew = () => {
     }
     console.log(files);
 
+    console.log(data);
+
     setLoading(false);
   };
 
+  const fetchCollections = async () => {
+    setCategoriesLoading(true);
+    try {
+      const res = await fetch("/api/collections", {
+        method: "GET",
+      });
+
+      const data = await res.json();
+
+      setCollections(data.collections);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setCategoriesLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCollections();
+  }, []);
+
   return (
     <div>
-      <ProductForm
-        files={files}
-        setFiles={setFiles}
-        permittedFileInfo={permittedFileInfo}
-        submitHandler={submitHandler}
-        submitLoading={loading}
-        stock={stockOptions}
-      />
+      {!categoriesLoading && (
+        <ProductForm
+          files={files}
+          setFiles={setFiles}
+          permittedFileInfo={permittedFileInfo}
+          submitHandler={submitHandler}
+          submitLoading={loading}
+          stock={stockOptions}
+          collections={collections}
+        />
+      )}
+      {categoriesLoading && <EditSkeleton />}
     </div>
   );
 };
